@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CFRIHOA · Maintenance Requests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Submit a maintenance request for your CFRIHOA rental home.">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <div class="min-h-screen flex flex-col">
+    <div id="site-header"></div>
+
+    <main class="flex-1">
+      <section class="py-10 sm:py-14 lg:py-16">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 class="text-2xl sm:text-3xl font-semibold text-slate-900">
+            Maintenance Requests
+          </h1>
+          <p class="mt-2 text-sm text-slate-600">
+            Use this page for non-emergency maintenance requests. For emergencies, please follow the instructions below.
+          </p>
+
+          <div class="mt-6 grid gap-5 md:grid-cols-2">
+            <div class="bg-rose-50 border border-rose-100 rounded-2xl p-4 text-sm">
+              <h2 class="font-semibold text-rose-800">Emergency Situations</h2>
+              <p class="mt-2 text-rose-900 text-xs">
+                Examples: fire, gas smell, active flooding, no heat in severe cold, electrical sparks,
+                or anything that threatens life or major property damage.
+              </p>
+              <p class="mt-3 text-xs text-rose-900 font-medium">
+                Call 911 first if anyone’s safety is at risk.
+              </p>
+              <p class="mt-1 text-xs text-rose-900">
+                Then contact us by phone at: <span class="font-semibold">(401) 210-2121</span>
+              </p>
+            </div>
+
+            <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-sm">
+              <h2 class="font-semibold text-emerald-900">Non-Emergency Requests</h2>
+              <p class="mt-2 text-emerald-900 text-xs">
+                Examples: dripping faucet, running toilet, appliance not working properly, minor leaks,
+                loose railing, etc.
+              </p>
+              <p class="mt-3 text-xs text-emerald-900">
+                Please submit the form below with as much detail as possible. We’ll confirm receipt and
+                follow up as quickly as we can.
+              </p>
+              <p class="mt-2 text-[11px] text-emerald-900">
+                (Behind the scenes: tags like
+                <span class="font-mono">Maintenance - Request - Received</span> and
+                <span class="font-mono">Source - Website</span> create a ticket in our
+                Maintenance pipeline so nothing gets missed.)
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-8 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+            <h2 class="text-base font-semibold text-slate-900">Submit a Maintenance Request</h2>
+            <p class="mt-1 text-xs text-slate-600">
+              This form is for current residents only.
+            </p>
+
+            <!-- Replace this block with embedded GHL maintenance form -->
+            <div class="mt-4 border border-dashed border-slate-300 rounded-xl p-6 text-center text-xs text-slate-500">
+              GHL Maintenance Request form embed placeholder<br>
+              <!-- Example:
+              <iframe src="https://your-ghl-form-url" class="w-full h-[650px] border-none"></iframe>
+              -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+  </div>
+
+  <script>
+    async function loadPartial(targetId, file) {
+      const container = document.getElementById(targetId);
+      if (!container) return;
+      try {
+        const res = await fetch(file);
+        const html = await res.text();
+        container.innerHTML = html;
+      } catch (e) {
+        console.error('Error loading partial:', file, e);
+      }
+    }
+    loadPartial('site-header', 'header.html');
+    loadPartial('site-footer', 'footer.html');
+  </script>
+</body>
+</html>

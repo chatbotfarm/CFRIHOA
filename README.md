@@ -1,0 +1,9 @@
+CFRIHOA/
+  header.html
+  footer.html
+  index.html
+  rentals.html
+  maintenance.html
+  owner-partnerships.html
+  /img
+      README.md

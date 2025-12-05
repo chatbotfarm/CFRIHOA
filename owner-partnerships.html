@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CFRIHOA · Owner Partnerships</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Partner with CFRIHOA to offer well-maintained homes and a respectful resident experience.">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <div class="min-h-screen flex flex-col">
+    <div id="site-header"></div>
+
+    <main class="flex-1">
+      <section class="py-10 sm:py-14 lg:py-16">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p class="text-xs font-semibold tracking-wide text-slate-500 uppercase mb-2">
+            For Local Property Owners
+          </p>
+          <h1 class="text-2xl sm:text-3xl font-semibold text-slate-900">
+            Join the Club of Responsible Residential Rental Owners
+          </h1>
+          <p class="mt-3 text-sm text-slate-600">
+            CFRIHOA is, first and foremost, a resident-first rental company. Quietly, in the
+            background, we also partner with a small group of responsible owners who value stable,
+            well-cared-for homes and long-term relationships with residents.
+          </p>
+
+          <div class="mt-8 space-y-6">
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <h2 class="text-base font-semibold text-slate-900">What we believe about rentals</h2>
+              <ul class="mt-3 list-disc pl-5 text-sm text-slate-600 space-y-1.5">
+                <li>Homes should be safe, clean, and functional.</li>
+                <li>Residents should be treated with respect and clarity.</li>
+                <li>Maintenance isn’t an afterthought — it’s part of being responsible.</li>
+                <li>Good rentals can be a stable chapter on the way to homeownership.</li>
+              </ul>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <h2 class="text-base font-semibold text-slate-900">Who this partnership is for</h2>
+              <p class="mt-2 text-sm text-slate-600">
+                We tend to be a good fit for owners who:
+              </p>
+              <ul class="mt-3 list-disc pl-5 text-sm text-slate-600 space-y-1.5">
+                <li>Care about offering solid housing, not cutting every possible corner.</li>
+                <li>Prefer steady, predictable results over constant churn.</li>
+                <li>Want systems and communication that residents can rely on.</li>
+                <li>Appreciate long-term relationships with both residents and managers.</li>
+              </ul>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <h2 class="text-base font-semibold text-slate-900">What we handle</h2>
+              <div class="mt-3 grid sm:grid-cols-2 gap-3 text-sm text-slate-600">
+                <ul class="list-disc pl-5 space-y-1.5">
+                  <li>Property listing & resident screening</li>
+                  <li>Lease coordination & renewals</li>
+                  <li>Rent collection & basic reporting</li>
+                </ul>
+                <ul class="list-disc pl-5 space-y-1.5">
+                  <li>Maintenance coordination and follow-up</li>
+                  <li>Regular communication with residents</li>
+                  <li>Move-in / move-out inspections</li>
+                </ul>
+              </div>
+              <p class="mt-3 text-[11px] text-slate-500">
+                (Internally, your file flows through the Landlord Onboarding & Compliance pipeline:
+                stages like <span class="font-mono">New Landlord Lead</span>,
+                <span class="font-mono">Discovery Call Completed</span>,
+                <span class="font-mono">Agreement Signed</span>, and
+                <span class="font-mono">Onboarding Active</span> keep our team aligned.)
+              </p>
+            </div>
+
+            <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 text-sm">
+              <h2 class="font-semibold text-emerald-900">Curious about partnering?</h2>
+              <p class="mt-2 text-emerald-900">
+                If you’d like to explore whether we’re a fit for one or more of your properties,
+                start with a simple conversation. No pressure, no hard sell — just clarity.
+              </p>
+              <p class="mt-2 text-[11px] text-emerald-900">
+                (Behind the scenes: tags like
+                <span class="font-mono">Landlord - Lead - New</span>,
+                <span class="font-mono">Intent - Landlord - Management Request</span>,
+                and <span class="font-mono">Source - Website</span> move you into our
+                Landlord Onboarding pipeline.)
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-3">
+                <!-- Replace with GHL owner-intake form link or calendar -->
+                <a href="#company-contact"
+                   class="inline-flex items-center rounded-full bg-emerald-600 px-6 py-2 text-xs font-medium text-white hover:bg-emerald-700">
+                  Call or DM to Start
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <p class="mt-8 text-[11px] text-slate-500">
+            Note: This page is intended for owners. Our main focus remains on providing a
+            positive, stable experience for current and future residents.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+  </div>
+
+  <script>
+    async function loadPartial(targetId, file) {
+      const container = document.getElementById(targetId);
+      if (!container) return;
+      try {
+        const res = await fetch(file);
+        const html = await res.text();
+        container.innerHTML = html;
+      } catch (e) {
+        console.error('Error loading partial:', file, e);
+      }
+    }
+    loadPartial('site-header', 'header.html');
+    loadPartial('site-footer', 'footer.html');
+  </script>
+</body>
+</html>

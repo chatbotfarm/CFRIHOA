@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CFRIHOA · Available Rentals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Browse current rental homes managed by CFRIHOA.">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <div class="min-h-screen flex flex-col">
+    <div id="site-header"></div>
+
+    <main class="flex-1">
+      <section class="py-10 sm:py-14 lg:py-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+            <div>
+              <h1 class="text-2xl sm:text-3xl font-semibold text-slate-900">
+                Available Rentals
+              </h1>
+              <p class="mt-2 text-sm text-slate-600">
+                Browse homes currently managed by CFRIHOA. When you request a viewing, our system
+                tags your inquiry and moves it into the right step of our tenant lifecycle.
+              </p>
+              <p class="mt-2 text-[11px] text-slate-500">
+                (Behind the scenes: tags like <span class="font-mono">Tenant - Lead - New</span>,
+                <span class="font-mono">Intent - Tenant - Rental Inquiry</span>, and
+                <span class="font-mono">Source - Website</span> help us respond quickly and consistently.)
+              </p>
+            </div>
+          </div>
+
+          <!-- GHL LISTING EMBED -->
+          <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm">
+            <h2 class="text-sm font-semibold text-slate-900 mb-3">
+              Current Listings
+            </h2>
+            <p class="text-xs text-slate-600 mb-4">
+              Click into any property to view details and request a viewing. A custom GHL listing
+              embed will live here.
+            </p>
+
+            <!-- Replace this block with your actual GHL listing embed code -->
+            <div class="border border-dashed border-slate-300 rounded-xl p-6 text-center text-xs text-slate-500">
+              GHL listing embed placeholder<br>
+              <!-- Example:
+              <script src="https://.../ghl-listing.js"></script>
+              <div data-ghl-listing="cfrinhoa-rentals"></div>
+              -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+  </div>
+
+  <script>
+    async function loadPartial(targetId, file) {
+      const container = document.getElementById(targetId);
+      if (!container) return;
+      try {
+        const res = await fetch(file);
+        const html = await res.text();
+        container.innerHTML = html;
+      } catch (e) {
+        console.error('Error loading partial:', file, e);
+      }
+    }
+    loadPartial('site-header', 'header.html');
+    loadPartial('site-footer', 'footer.html');
+  </script>
+</body>
+</html>
