@@ -6,340 +6,306 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="CFRIHOA is a local residential rental company focused on clean, affordable homes, responsive maintenance, and respectful treatment for residents.">
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    html { font-size: 16px; }
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: calc(16 / 9 * 100%); /* 9x16 portrait format */
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+  </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
   <div class="min-h-screen flex flex-col">
+
     <!-- HEADER PARTIAL -->
     <div id="site-header"></div>
 
     <main class="flex-1">
+
       <!-- HERO -->
       <section class="bg-gradient-to-b from-emerald-50 to-slate-50 border-b border-slate-200">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20 grid lg:grid-cols-2 gap-10 items-center">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 grid lg:grid-cols-2 gap-12 items-center">
+
+          <!-- LEFT TEXT -->
           <div>
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 tracking-tight">
+            <h1 class="text-4xl lg:text-5xl font-semibold text-slate-900 leading-tight">
               Modern, Affordable Homes in Friendly Neighborhoods
             </h1>
-            <p class="mt-4 text-base sm:text-lg text-slate-600">
+
+            <p class="mt-4 text-lg text-slate-700 leading-relaxed">
               CFRIHOA is a small, local rental company that puts residents first.
               Clean units, responsive maintenance, fair treatment, and simple systems —
               so your rental actually feels like home.
             </p>
 
-            <div class="mt-6 flex flex-wrap gap-3">
+            <!-- Main CTA buttons -->
+            <div class="mt-6 flex flex-wrap gap-4">
               <a href="rentals.html"
-                 class="inline-flex items-center rounded-full bg-emerald-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-emerald-700">
+                 class="inline-flex items-center rounded-full bg-emerald-600 px-7 py-3 text-base font-medium text-white shadow hover:bg-emerald-700">
                 View Available Rentals
               </a>
               <a href="#company-contact"
-                 class="inline-flex items-center rounded-full border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-white">
+                 class="inline-flex items-center rounded-full border border-slate-300 px-7 py-3 text-base font-medium text-slate-800 hover:bg-white">
                 Call or DM Us
               </a>
             </div>
 
-            <div class="mt-5 inline-flex items-center gap-2 rounded-full bg-white/70 border border-emerald-100 px-4 py-2 text-xs sm:text-sm text-emerald-800 shadow-sm">
-              <span class="inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+            <!-- BIGGER HOMEOWNERSHIP PILL -->
+            <div class="mt-8 inline-flex items-center gap-3 rounded-full bg-white/90 border border-emerald-200 px-6 py-3 text-lg font-medium text-emerald-700 shadow">
+              <span class="inline-flex h-3.5 w-3.5 rounded-full bg-emerald-500"></span>
               <span>7 of our last 8 residents moved out because they bought their own home.</span>
             </div>
           </div>
 
+          <!-- RIGHT IMAGE -->
           <div class="lg:pl-8">
             <div class="relative">
-              <div class="absolute -inset-4 rounded-3xl bg-emerald-100/50 blur-xl"></div>
-              <div class="relative rounded-3xl bg-white border border-slate-200 shadow-lg p-4 sm:p-6">
-                <div class="rounded-2xl bg-slate-900 h-40 sm:h-52 mb-4 flex items-end p-4">
-                  <div>
-                    <p class="text-xs uppercase tracking-wide text-emerald-300">Featured Community</p>
-                    <p class="text-lg font-semibold text-white">
-                      Quiet, tree-lined streets. Friendly neighbors.
-                    </p>
-                  </div>
+              <div class="absolute -inset-4 rounded-3xl bg-emerald-100/50 blur-2xl"></div>
+
+              <div class="relative rounded-3xl bg-white border border-slate-200 shadow-xl overflow-hidden">
+                <div class="h-64 lg:h-80">
+                  <img
+                    src="https://storage.googleapis.com/msgsndr/5GWQF2YqN58HLejkPS3P/media/69346f121d466e26520ec785.jpg"
+                    alt="Bird's-eye view of the city"
+                    class="w-full h-full object-cover"
+                  />
                 </div>
-                <div class="grid grid-cols-2 gap-4 text-xs sm:text-sm">
-                  <div>
-                    <p class="font-semibold text-slate-900">Resident-First</p>
-                    <p class="mt-1 text-slate-600">
-                      Respectful communication and clear expectations for everyone.
-                    </p>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-slate-900">Maintenance that shows up</p>
-                    <p class="mt-1 text-slate-600">
-                      Easy requests, timely responses, and follow-up.
-                    </p>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-slate-900">Modern systems</p>
-                    <p class="mt-1 text-slate-600">
-                      Online listings, showings, and updates — no chaos.
-                    </p>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-slate-900">Your journey matters</p>
-                    <p class="mt-1 text-slate-600">
-                      We’re happy when you stay — and proud when you buy your own home.
-                    </p>
-                  </div>
+
+                <div class="p-6">
+                  <p class="text-emerald-700 text-sm font-semibold uppercase tracking-wide">Featured Community</p>
+                  <p class="mt-1 text-xl font-semibold text-slate-900">
+                    Quiet, tree-lined streets. Friendly neighbors.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </section>
 
       <!-- WHAT IT'S LIKE TO RENT -->
-      <section class="py-10 sm:py-14 lg:py-16">
+      <section class="py-14 lg:py-20">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="max-w-2xl mb-8">
-            <h2 class="text-2xl sm:text-3xl font-semibold text-slate-900">
-              What It’s Like to Rent From CFRIHOA
-            </h2>
-            <p class="mt-2 text-slate-600">
-              Renting shouldn’t feel like fighting a machine. We keep things simple, human, and clear.
-            </p>
+
+          <h2 class="text-3xl font-semibold text-slate-900">What It’s Like to Rent From CFRIHOA</h2>
+          <p class="mt-2 text-lg text-slate-600">Renting shouldn’t feel like fighting a machine. We keep things simple, human, and clear.</p>
+
+          <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-3xl mb-4">🏠</div>
+              <h3 class="font-semibold text-slate-900 text-lg">Clean, cared-for homes</h3>
+              <p class="mt-3 text-base text-slate-700 leading-relaxed">
+                Safe, functional, comfortable spaces — not surprises.
+              </p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-3xl mb-4">💬</div>
+              <h3 class="font-semibold text-slate-900 text-lg">Easy communication</h3>
+              <p class="mt-3 text-base text-slate-700 leading-relaxed">
+                Call, text, or email — we reply quickly and keep you informed.
+              </p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-3xl mb-4">🤝</div>
+              <h3 class="font-semibold text-slate-900 text-lg">Respect & fairness</h3>
+              <p class="mt-3 text-base text-slate-700 leading-relaxed">
+                Clear expectations, no games, no surprises.
+              </p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <div class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-3xl mb-4">🏡</div>
+              <h3 class="font-semibold text-slate-900 text-lg">From rental to homeownership</h3>
+              <p class="mt-3 text-base text-slate-700 leading-relaxed">
+                Many residents save for and purchase their first home while renting with us.
+              </p>
+            </div>
+
           </div>
 
-          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-              <h3 class="font-semibold text-slate-900">Clean, cared-for homes</h3>
-              <p class="mt-2 text-sm text-slate-600">
-                We maintain our rentals with care. You can expect safe, functional, comfortable spaces — not surprises.
-              </p>
-            </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-              <h3 class="font-semibold text-slate-900">Easy communication</h3>
-              <p class="mt-2 text-sm text-slate-600">
-                Text, call, or email — we respond quickly and keep you informed about what’s happening.
-              </p>
-            </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-              <h3 class="font-semibold text-slate-900">Respect & fairness</h3>
-              <p class="mt-2 text-sm text-slate-600">
-                We treat residents like people, not line items. Clear policies, clear expectations, and no games.
-              </p>
-            </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-              <h3 class="font-semibold text-slate-900">A step on your path</h3>
-              <p class="mt-2 text-sm text-slate-600">
-                Many residents stay with us until they buy their own home. We’re happy to be part of that chapter.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
-      <!-- FEATURED RENTALS (can be GHL listing snippet or static preview) -->
-      <section class="py-10 sm:py-14 lg:py-16 bg-white border-y border-slate-200">
+      <!-- FEATURED VIDEO SECTION -->
+      <section class="py-14 lg:py-20 bg-white border-y border-slate-200">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex items-center justify-between mb-6">
-            <div>
-              <h2 class="text-2xl sm:text-3xl font-semibold text-slate-900">Featured Rentals</h2>
-              <p class="mt-1 text-slate-600 text-sm">
-                A quick look at a few homes in our portfolio. Full listing is on the Rentals page.
-              </p>
+
+          <h2 class="text-3xl font-semibold text-slate-900 mb-6">A Look Inside CFRIHOA</h2>
+
+          <div class="max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-200">
+            <div class="video-wrapper">
+              <iframe 
+                src="https://www.youtube.com/embed/8IoO2-19vQU"
+                title="CFRIHOA Video"
+                frameborder="0"
+                allowfullscreen>
+              </iframe>
             </div>
-            <a href="rentals.html" class="hidden sm:inline-flex text-sm font-medium text-emerald-700 hover:text-emerald-800">
-              View all rentals &rarr;
+          </div>
+
+          <!-- Maintenance Button Under Video -->
+          <div class="mt-10 flex justify-center">
+            <a href="tel:4012102121"
+               class="inline-flex items-center rounded-full bg-red-600 px-10 py-3 text-base font-medium text-white shadow hover:bg-red-700">
+              Request Maintenance
             </a>
           </div>
 
-          <!-- Placeholder cards or you can embed a small GHL listing widget here -->
-          <div class="grid md:grid-cols-3 gap-6">
-            <article class="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-              <div class="h-40 bg-slate-300"></div>
-              <div class="p-4">
-                <p class="text-xs uppercase tracking-wide text-emerald-700 font-medium mb-1">Available Now</p>
-                <h3 class="font-semibold text-slate-900 text-sm">
-                  Cozy 2-Bedroom Near Downtown
-                </h3>
-                <p class="mt-1 text-xs text-slate-600">
-                  Bright living room, updated kitchen, quiet street, walkable to shops.
-                </p>
-                <div class="mt-3 flex items-center justify-between text-xs text-slate-700">
-                  <span>$1,750 / month</span>
-                  <span>2 bed · 1 bath</span>
-                </div>
-                <div class="mt-3 flex gap-2">
-                  <a href="rentals.html"
-                     class="inline-flex flex-1 justify-center rounded-full bg-white border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-800 hover:bg-slate-100">
-                    Details
-                  </a>
-                  <!-- GHL Viewing Request form link could go here -->
-                  <a href="rentals.html"
-                     class="inline-flex flex-1 justify-center rounded-full bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700">
-                    Schedule Viewing
-                  </a>
-                </div>
-              </div>
-            </article>
-
-            <!-- Duplicate or swap in real units, or replace with GHL embed -->
-          </div>
-
-          <div class="mt-6 sm:hidden">
-            <a href="rentals.html" class="inline-flex text-sm font-medium text-emerald-700 hover:text-emerald-800">
-              View all rentals &rarr;
-            </a>
-          </div>
         </div>
       </section>
 
-      <!-- HOW RENTING WORKS (NO “APPLY” BUTTON, just flow) -->
-      <section class="py-10 sm:py-14 lg:py-16">
+      <!-- RENTING STEPS -->
+      <section class="py-14 lg:py-20">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="max-w-2xl mb-8">
-            <h2 class="text-2xl sm:3xl font-semibold text-slate-900">
-              How Renting With Us Works
-            </h2>
-            <p class="mt-2 text-slate-600">
-              Simple, transparent steps — from first message to move-in.
-            </p>
-          </div>
 
-          <div class="grid md:grid-cols-3 gap-6">
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-              <p class="text-xs font-semibold tracking-wide text-emerald-700 uppercase mb-1">Step 1</p>
-              <h3 class="font-semibold text-slate-900">Browse available homes</h3>
-              <p class="mt-2 text-sm text-slate-600">
-                Explore rentals that fit your budget and preferred neighborhoods.
-              </p>
-              <a href="rentals.html" class="mt-3 inline-flex text-xs font-medium text-emerald-700 hover:text-emerald-800">
-                View rentals &rarr;
+          <h2 class="text-3xl font-semibold text-slate-900">How Renting With Us Works</h2>
+          <p class="mt-2 text-lg text-slate-600">Simple, transparent steps — from first message to move-in.</p>
+
+          <div class="mt-12 grid md:grid-cols-3 gap-8">
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <p class="text-emerald-700 text-sm font-semibold uppercase mb-1">Step 1</p>
+              <h3 class="font-semibold text-slate-900 text-lg">Browse available homes</h3>
+              <p class="mt-3 text-base text-slate-700">Find the right home in the right neighborhood.</p>
+              <a href="rentals.html" class="mt-3 inline-flex text-base font-medium text-emerald-700 hover:text-emerald-800">
+                View rentals →
               </a>
             </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-              <p class="text-xs font-semibold tracking-wide text-emerald-700 uppercase mb-1">Step 2</p>
-              <h3 class="font-semibold text-slate-900">Schedule a viewing</h3>
-              <p class="mt-2 text-sm text-slate-600">
-                Pick a time that works for you. We’ll confirm and tag your inquiry correctly in our system.
-              </p>
-              <p class="mt-2 text-[11px] text-slate-500">
-                (Behind the scenes: tags like <span class="font-mono">Tenant - Viewing - Requested</span>,
-                <span class="font-mono">Intent - Tenant - Rental Inquiry</span>, and
-                <span class="font-mono">Source - Website</span> are applied in GHL.)
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <p class="text-emerald-700 text-sm font-semibold uppercase mb-1">Step 2</p>
+              <h3 class="font-semibold text-slate-900 text-lg">Schedule a viewing</h3>
+              <p class="mt-3 text-base text-slate-700">Pick a time that works for you. We'll confirm.</p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <p class="text-emerald-700 text-sm font-semibold uppercase mb-1">Step 3</p>
+              <h3 class="font-semibold text-slate-900 text-lg">Receive application link</h3>
+              <p class="mt-3 text-base text-slate-700">
+                After viewing, we'll send you a secure link if it feels like a good match.
               </p>
             </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-              <p class="text-xs font-semibold tracking-wide text-emerald-700 uppercase mb-1">Step 3</p>
-              <h3 class="font-semibold text-slate-900">Receive application link</h3>
-              <p class="mt-2 text-sm text-slate-600">
-                After your viewing, we’ll send a secure online application link if the home feels like a fit.
-              </p>
-              <p class="mt-2 text-[11px] text-slate-500">
-                (This is where workflows like <span class="font-mono">Tenant - Application - Sent</span>
-                and screening flows kick in.)
-              </p>
-            </div>
+
           </div>
+
         </div>
       </section>
 
       <!-- TESTIMONIALS -->
-      <section class="py-10 sm:py-14 lg:py-16 bg-emerald-900 text-emerald-50">
+      <section class="py-14 lg:py-20 bg-emerald-900 text-emerald-50">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="max-w-2xl mb-8">
-            <h2 class="text-2xl sm:text-3xl font-semibold">
-              What Residents Say
-            </h2>
-            <p class="mt-2 text-emerald-100 text-sm">
-              A few words from people who have called a CFRIHOA property home.
-            </p>
-          </div>
 
-          <div class="grid md:grid-cols-3 gap-6">
-            <figure class="bg-emerald-800/60 border border-emerald-700 rounded-2xl p-5">
-              <blockquote class="text-sm">
+          <h2 class="text-3xl font-semibold">What Residents Say</h2>
+          <p class="mt-2 text-lg text-emerald-100">A few words from people who have called a CFRIHOA property home.</p>
+
+          <div class="mt-10 grid md:grid-cols-3 gap-8">
+
+            <figure class="bg-emerald-800/60 border border-emerald-700 rounded-2xl p-6">
+              <blockquote class="text-base leading-relaxed">
                 “Maintenance is quick and communication is clear. Best rental experience I’ve had.”
               </blockquote>
-              <figcaption class="mt-3 text-xs text-emerald-200">
-                – Current Resident
-              </figcaption>
+              <figcaption class="mt-4 text-base text-emerald-200">– Current Resident</figcaption>
             </figure>
-            <figure class="bg-emerald-800/60 border border-emerald-700 rounded-2xl p-5">
-              <blockquote class="text-sm">
+
+            <figure class="bg-emerald-800/60 border border-emerald-700 rounded-2xl p-6">
+              <blockquote class="text-base leading-relaxed">
                 “They treated us like people, not just another unit. We always knew what to expect.”
               </blockquote>
-              <figcaption class="mt-3 text-xs text-emerald-200">
-                – Former Resident
-              </figcaption>
+              <figcaption class="mt-4 text-base text-emerald-200">– Former Resident</figcaption>
             </figure>
-            <figure class="bg-emerald-800/60 border border-emerald-700 rounded-2xl p-5">
-              <blockquote class="text-sm">
+
+            <figure class="bg-emerald-800/60 border border-emerald-700 rounded-2xl p-6">
+              <blockquote class="text-base leading-relaxed">
                 “We rented for two years before buying our first home. They were genuinely happy for us.”
               </blockquote>
-              <figcaption class="mt-3 text-xs text-emerald-200">
-                – Former Resident, now homeowner
-              </figcaption>
+              <figcaption class="mt-4 text-base text-emerald-200">– Homeowner</figcaption>
             </figure>
+
           </div>
+
         </div>
       </section>
 
-      <!-- OWNER PARTNERSHIPS (SOFT) -->
-      <section class="py-10 sm:py-14 lg:py-16">
+      <!-- OWNER PARTNERSHIPS -->
+      <section class="py-14 lg:py-20">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="max-w-3xl">
-            <p class="text-xs font-semibold tracking-wide text-slate-500 uppercase mb-1">
-              For Local Property Owners
-            </p>
-            <h2 class="text-xl sm:text-2xl font-semibold text-slate-900">
-              Join the club of responsible residential rental owners.
-            </h2>
-            <p class="mt-2 text-sm text-slate-600">
-              Quietly, in the background, we partner with a small group of local owners who care
-              about providing well-maintained homes and fair treatment for residents. If that
-              sounds like you, we’d be happy to connect.
-            </p>
-            <a href="owner-partnerships.html"
-               class="mt-4 inline-flex rounded-full border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-800 hover:bg-white">
-              Learn about owner partnerships
-            </a>
-          </div>
+
+          <p class="text-sm font-semibold uppercase tracking-wide text-slate-500 mb-2">
+            For Local Property Owners
+          </p>
+
+          <h2 class="text-2xl lg:text-3xl font-semibold text-slate-900">
+            Join the club of responsible residential rental owners.
+          </h2>
+
+          <p class="mt-3 text-base text-slate-700 max-w-2xl leading-relaxed">
+            We partner with responsible owners who want stable rentals, clear communication, and
+            well-maintained homes. If that sounds like you, we'd be happy to talk.
+          </p>
+
+          <a href="owner-partnerships.html"
+             class="mt-6 inline-flex rounded-full border border-slate-300 px-6 py-3 text-base font-medium text-slate-900 hover:bg-white">
+            Learn about owner partnerships
+          </a>
+
         </div>
       </section>
 
       <!-- FINAL CTA -->
-      <section class="py-10 sm:py-14 lg:py-16 bg-white border-t border-slate-200">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 class="text-2xl sm:text-3xl font-semibold text-slate-900">
-            Ready to Find Your Next Home?
-          </h2>
-          <p class="mt-2 text-slate-600 max-w-xl mx-auto text-sm">
-            Start with the Rentals page, then text or call if you have questions.
+      <section class="py-14 lg:py-20 bg-white border-t border-slate-200 text-center">
+        <div class="max-w-4xl mx-auto">
+
+          <h2 class="text-3xl font-semibold text-slate-900">Ready to Find Your Next Home?</h2>
+
+          <p class="mt-3 text-lg text-slate-600">
+            Start with our available rentals, then call or DM if you have any questions.
           </p>
-          <div class="mt-6 flex flex-wrap justify-center gap-3">
+
+          <div class="mt-8 flex flex-wrap justify-center gap-4">
             <a href="rentals.html"
-               class="inline-flex items-center rounded-full bg-emerald-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-emerald-700">
+               class="inline-flex items-center rounded-full bg-emerald-600 px-8 py-3 text-base font-medium text-white hover:bg-emerald-700">
               View Rentals
             </a>
+
             <a href="#company-contact"
-               class="inline-flex items-center rounded-full border border-slate-300 px-6 py-2.5 text-sm font-medium text-slate-800 hover:bg-white">
+               class="inline-flex items-center rounded-full border border-slate-300 px-8 py-3 text-base font-medium text-slate-800 hover:bg-white">
               Call or DM Us
             </a>
           </div>
+
         </div>
       </section>
+
     </main>
 
     <!-- FOOTER PARTIAL -->
     <div id="site-footer"></div>
+
   </div>
 
-  <!-- PARTIAL LOADER -->
+  <!-- PARTIAL IMPORT SCRIPT -->
   <script>
     async function loadPartial(targetId, file) {
-      const container = document.getElementById(targetId);
-      if (!container) return;
-      try {
-        const res = await fetch(file);
-        const html = await res.text();
-        container.innerHTML = html;
-      } catch (e) {
-        console.error('Error loading partial:', file, e);
-      }
+      const c = document.getElementById(targetId);
+      if (!c) return;
+      try { c.innerHTML = await (await fetch(file)).text(); }
+      catch (e) { console.error("Partial load error:", file, e); }
     }
-    loadPartial('site-header', 'header.html');
-    loadPartial('site-footer', 'footer.html');
+
+    loadPartial("site-header", "header.html");
+    loadPartial("site-footer", "footer.html");
   </script>
+
 </body>
 </html>
