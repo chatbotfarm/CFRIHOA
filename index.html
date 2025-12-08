@@ -1,4 +1,4 @@
-<!doctype html>
+<!doctype html> 
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -12,7 +12,7 @@
     .video-wrapper {
       position: relative;
       width: 100%;
-      padding-bottom: calc(16 / 9 * 100%); /* 9x16 portrait format */
+      padding-bottom: calc(16 / 9 * 100%); /* 16:9 */
     }
     .video-wrapper iframe {
       position: absolute;
@@ -294,13 +294,40 @@
 
   </div>
 
-  <!-- PARTIAL IMPORT SCRIPT -->
+  <!-- PARTIALS + MOBILE MENU SCRIPT -->
   <script>
+    function attachMobileMenuToggle() {
+      const btn = document.getElementById('mobile-menu-button');
+      const menu = document.getElementById('mobile-menu');
+      if (!btn || !menu) return;
+
+      btn.addEventListener('click', function () {
+        const isHidden = menu.classList.contains('hidden');
+        if (isHidden) {
+          menu.classList.remove('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+        } else {
+          menu.classList.add('hidden');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
     async function loadPartial(targetId, file) {
-      const c = document.getElementById(targetId);
-      if (!c) return;
-      try { c.innerHTML = await (await fetch(file)).text(); }
-      catch (e) { console.error("Partial load error:", file, e); }
+      const el = document.getElementById(targetId);
+      if (!el) return;
+      try {
+        const res = await fetch(file);
+        const html = await res.text();
+        el.innerHTML = html;
+
+        // After header loads, wire up mobile menu
+        if (file === 'header.html') {
+          attachMobileMenuToggle();
+        }
+      } catch (e) {
+        console.error("Partial load error:", file, e);
+      }
     }
 
     loadPartial("site-header", "header.html");
@@ -308,43 +335,4 @@
   </script>
 
 </body>
-<script>
-  function attachMobileMenuToggle() {
-    const btn = document.getElementById('mobile-menu-button');
-    const menu = document.getElementById('mobile-menu');
-    if (!btn || !menu) return;
-
-    btn.addEventListener('click', function () {
-      const isHidden = menu.classList.contains('hidden');
-      if (isHidden) {
-        menu.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-      } else {
-        menu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
-
-  async function loadPartial(targetId, file) {
-    const el = document.getElementById(targetId);
-    if (!el) return;
-    try {
-      const res = await fetch(file);
-      const html = await res.text();
-      el.innerHTML = html;
-
-      // If we just loaded the header, wire up the mobile menu
-      if (file === 'header.html') {
-        attachMobileMenuToggle();
-      }
-    } catch (e) {
-      console.error("Partial load error:", file, e);
-    }
-  }
-
-  loadPartial("site-header", "header.html");
-  loadPartial("site-footer", "footer.html");
-</script>
-
 </html>
