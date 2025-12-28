@@ -1,117 +1,354 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>CFRIHOA · Available Rentals</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Browse current rental homes managed by CFRIHOA.">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CFRIHOA — Available Rentals</title>
+  <meta name="description" content="Browse available CFRIHOA rental units in Central Falls, RI." />
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#111824;
+      --muted:#9fb0c3;
+      --text:#e7f0ff;
+      --line:#203044;
+      --accent:#7ec8ff;
+      --ok:#30c48d;
+      --bad:#ff5c5c;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:var(--bg);color:var(--text)}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:26px}
+    .top{
+      display:flex;gap:14px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;
+    }
+    .logo{
+      width:44px;height:44px;border-radius:12px;
+      display:grid;place-items:center;
+      background:linear-gradient(180deg,#18263c,#0d1522);
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      font-size:22px;
+    }
+    h1{margin:0;font-size:24px;letter-spacing:.4px}
+    .sub{margin:4px 0 0;color:var(--muted)}
+    .card{
+      background:linear-gradient(180deg,#121c2b,#0f1725);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .controls{
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+      padding:14px;
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:8px 10px;
+      color:var(--muted);
+      background:rgba(11,15,20,.35);
+    }
+    .pill b{color:var(--text);font-weight:700}
+    .input, select{
+      font:inherit;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#0c1320;
+      color:var(--text);
+      min-width: 220px;
+      outline:none;
+    }
+    .btn{
+      font:inherit;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#13223a;
+      color:var(--text);
+      cursor:pointer;
+    }
+    .btn:hover{border-color:#2a4260}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      padding:14px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 640px){
+      .grid{grid-template-columns:1fr;}
+      .input, select{min-width: 1px; width:100%;}
+    }
+    .listing{
+      overflow:hidden;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:#0b1220;
+      display:flex;
+      flex-direction:column;
+      min-height: 340px;
+      transition: transform .12s ease, border-color .12s ease;
+    }
+    .listing:hover{
+      transform: translateY(-2px);
+      border-color:#2a4260;
+    }
+    .img{
+      height:170px;
+      background:#0c1320;
+      border-bottom:1px solid var(--line);
+      position:relative;
+      overflow:hidden;
+    }
+    .img img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transform: scale(1.02);
+    }
+    .badge{
+      position:absolute;left:10px;top:10px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(11,15,20,.55);
+      backdrop-filter: blur(6px);
+      color:var(--text);
+      font-size:12px;
+    }
+    .body{padding:12px 12px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .title{font-weight:800;font-size:15px}
+    .meta{color:var(--muted);font-size:12px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .k{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+    .price{
+      margin-top:auto;
+      display:flex;justify-content:space-between;align-items:center;gap:10px;
+      padding-top:10px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+    .price b{font-size:16px}
+    .cta{
+      color:var(--accent);
+      font-weight:700;
+    }
+    .empty{
+      padding:18px;
+      color:var(--muted);
+      text-align:center;
+    }
+    .foot{
+      margin-top:16px;
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .note a{color:var(--accent);text-decoration:underline}
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
-  <div class="min-h-screen flex flex-col">
-    <div id="site-header"></div>
-
-    <main class="flex-1">
-      <section class="py-10 sm:py-14 lg:py-16">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
-            <div>
-              <h1 class="text-2xl sm:text-3xl font-semibold text-slate-900">
-                Available Rentals
-              </h1>
-              <p class="mt-2 text-sm text-slate-600">
-                Browse homes currently managed by CFRIHOA. When you request a viewing, our system
-                tags your inquiry and moves it into the right step of our tenant lifecycle.
-              </p>
-              <p class="mt-2 text-[11px] text-slate-500">
-                (Behind the scenes: tags like <span class="font-mono">Tenant - Lead - New</span>,
-                <span class="font-mono">Intent - Tenant - Rental Inquiry</span>, and
-                <span class="font-mono">Source - Website</span> help us respond quickly and consistently.)
-              </p>
-            </div>
-          </div>
-
-          <!-- GHL LISTING EMBED -->
-          <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm">
-            <h2 class="text-sm font-semibold text-slate-900 mb-3">
-              Current Listings
-            </h2>
-            <p class="text-xs text-slate-600 mb-4">
-              Click into any property to view details and request a viewing. A custom GHL listing
-              embed will live here.
-            </p>
-
-            <!-- Replace this block with your actual GHL listing embed code -->
-            <div class="border border-dashed border-slate-300 rounded-xl p-6 text-center text-xs text-slate-500">
-              GHL listing embed placeholder<br>
-              <!-- Example:
-              <script src="https://.../ghl-listing.js"></script>
-              <div data-ghl-listing="cfrinhoa-rentals"></div>
-              -->
-            </div>
-          </div>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">🏠</div>
+        <div>
+          <h1>CFRIHOA</h1>
+          <div class="sub">Available rental units</div>
         </div>
-      </section>
-    </main>
+      </div>
 
-    <div id="site-footer"></div>
+      <div class="pill">
+        <span>Status:</span>
+        <b id="statusText">Loading…</b>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="controls">
+        <input id="q" class="input" placeholder="Search (title, floor, unit code…)" />
+        <select id="sort">
+          <option value="updated_desc">Sort: Recently updated</option>
+          <option value="price_asc">Sort: Price (low → high)</option>
+          <option value="price_desc">Sort: Price (high → low)</option>
+          <option value="beds_desc">Sort: Beds (high → low)</option>
+        </select>
+        <button id="btnRefresh" class="btn">Refresh</button>
+
+        <span class="pill">
+          <span>Results:</span>
+          <b id="count">0</b>
+        </span>
+      </div>
+
+      <div id="grid" class="grid"></div>
+      <div id="empty" class="empty" style="display:none;">No available listings found.</div>
+    </div>
+
+    <div class="foot">
+      <div class="note">
+        Admin: <a href="https://admin.cfrihoa.com" target="_blank" rel="noopener">admin.cfrihoa.com</a>
+      </div>
+      <div class="note">
+        API: <a href="https://api.cfrihoa.com/api/listings" target="_blank" rel="noopener">/api/listings</a>
+      </div>
+    </div>
   </div>
 
-  <script>
-    async function loadPartial(targetId, file) {
-      const container = document.getElementById(targetId);
-      if (!container) return;
-      try {
-        const res = await fetch(file);
-        const html = await res.text();
-        container.innerHTML = html;
-      } catch (e) {
-        console.error('Error loading partial:', file, e);
-      }
+<script>
+  // You can override at runtime by adding:
+  // <script>window.API_BASE="https://api.cfrihoa.com";</script>
+  // before this script tag (or set it in Cloudflare Pages build env later if you add a build step).
+  const API_BASE =
+    (window.API_BASE && String(window.API_BASE)) ||
+    "https://api.cfrihoa.com";
+
+  const $ = (id) => document.getElementById(id);
+
+  let all = [];
+
+  function money(v){
+    if (v === null || v === undefined || v === "") return "";
+    const n = Number(v);
+    if (!Number.isFinite(n)) return String(v);
+    return n.toLocaleString(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 });
+  }
+
+  function safeText(v){
+    return (v === null || v === undefined) ? "" : String(v);
+  }
+
+  function imgOrPlaceholder(url){
+    // Simple placeholder if missing
+    return url ? url : "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#121c2b"/>
+            <stop offset="1" stop-color="#0b1220"/>
+          </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#g)"/>
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+              fill="#9fb0c3" font-family="system-ui,Segoe UI,Roboto" font-size="40">
+          No Photo
+        </text>
+      </svg>
+    `);
+  }
+
+  function sortListings(list, mode){
+    const arr = [...list];
+    switch(mode){
+      case "price_asc":
+        arr.sort((a,b)=>(Number(a.price)||0)-(Number(b.price)||0)); break;
+      case "price_desc":
+        arr.sort((a,b)=>(Number(b.price)||0)-(Number(a.price)||0)); break;
+      case "beds_desc":
+        arr.sort((a,b)=>(Number(b.beds)||0)-(Number(a.beds)||0)); break;
+      case "updated_desc":
+      default:
+        arr.sort((a,b)=> (safeText(b.updated_at)).localeCompare(safeText(a.updated_at)));
     }
-    loadPartial('site-header', 'header.html');
-    loadPartial('site-footer', 'footer.html');
-  </script>
-  <!-- PARTIALS + MOBILE MENU SCRIPT -->
-  <script>
-    function attachMobileMenuToggle() {
-      const btn = document.getElementById('mobile-menu-button');
-      const menu = document.getElementById('mobile-menu');
-      if (!btn || !menu) return;
+    return arr;
+  }
 
-      btn.addEventListener('click', function () {
-        const isHidden = menu.classList.contains('hidden');
-        if (isHidden) {
-          menu.classList.remove('hidden');
-          btn.setAttribute('aria-expanded', 'true');
-        } else {
-          menu.classList.add('hidden');
-          btn.setAttribute('aria-expanded', 'false');
-        }
-      });
+  function filterListings(list, q){
+    q = (q||"").trim().toLowerCase();
+    if (!q) return list;
+    return list.filter(l=>{
+      const hay = [
+        l.title, l.slug, l.city, l.state, l.floor, l.unit_code,
+        l.description, String(l.price||""), String(l.beds||""), String(l.baths||"")
+      ].map(safeText).join(" ").toLowerCase();
+      return hay.includes(q);
+    });
+  }
+
+  function render(){
+    const q = $("q").value;
+    const sortMode = $("sort").value;
+
+    const filtered = sortListings(filterListings(all, q), sortMode);
+    $("count").textContent = String(filtered.length);
+
+    const grid = $("grid");
+    grid.innerHTML = "";
+
+    $("empty").style.display = filtered.length ? "none" : "";
+
+    for (const l of filtered){
+      const href = "/listing.html?slug=" + encodeURIComponent(l.slug);
+      const beds = (l.beds ?? "") !== "" ? `${l.beds} bd` : "";
+      const baths = (l.baths ?? "") !== "" ? `${l.baths} ba` : "";
+      const place = [beds, baths].filter(Boolean).join(" • ");
+
+      const photo = imgOrPlaceholder(l.primary_photo_url);
+      const metaLine = [
+        [safeText(l.city), safeText(l.state)].filter(Boolean).join(", "),
+        safeText(l.floor),
+        safeText(l.unit_code) ? ("Unit " + safeText(l.unit_code)) : ""
+      ].filter(Boolean).join(" • ");
+
+      const card = document.createElement("a");
+      card.className = "listing";
+      card.href = href;
+      card.innerHTML = `
+        <div class="img">
+          <img src="${photo}" alt="">
+          <div class="badge">${place || "Available"}</div>
+        </div>
+        <div class="body">
+          <div class="title">${safeText(l.title) || "(Untitled Listing)"}</div>
+          <div class="meta">${metaLine}</div>
+          <div class="meta">${safeText(l.description).slice(0, 110)}${safeText(l.description).length > 110 ? "…" : ""}</div>
+          <div class="price">
+            <div><b>${money(l.price)}</b> <span class="meta">/ month</span></div>
+            <div class="cta">View →</div>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
     }
+  }
 
-    async function loadPartial(targetId, file) {
-      const el = document.getElementById(targetId);
-      if (!el) return;
-      try {
-        const res = await fetch(file);
-        const html = await res.text();
-        el.innerHTML = html;
+  async function load(){
+    $("statusText").textContent = "Loading…";
+    try{
+      const res = await fetch(API_BASE + "/api/listings", { method:"GET" });
+      if (!res.ok) throw new Error(res.status + " " + res.statusText);
+      const data = await res.json();
 
-        // After header loads, wire up mobile menu
-        if (file === 'header.html') {
-          attachMobileMenuToggle();
-        }
-      } catch (e) {
-        console.error("Partial load error:", file, e);
-      }
+      all = Array.isArray(data.data) ? data.data : [];
+      $("statusText").textContent = "Online";
+      render();
+    }catch(err){
+      console.error(err);
+      $("statusText").textContent = "Error";
+      $("grid").innerHTML = "";
+      $("empty").style.display = "";
+      $("empty").textContent = "Could not load listings. Check API and CORS.";
     }
+  }
 
-    loadPartial("site-header", "header.html");
-    loadPartial("site-footer", "footer.html");
-  </script>
+  $("q").addEventListener("input", render);
+  $("sort").addEventListener("change", render);
+  $("btnRefresh").addEventListener("click", load);
 
+  load();
+</script>
 </body>
-
 </html>
