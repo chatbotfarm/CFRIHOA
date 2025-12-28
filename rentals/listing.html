@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>CFRIHOA — Rental Listing</title>
   <meta name="description" content="CFRIHOA rental listing details." />
-
   <style>
     :root{
       --bg:#0b0f14;
@@ -18,8 +17,8 @@
       --radius: 18px;
     }
     *{box-sizing:border-box}
-    body{margin:0;font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:var(--bg);color:var(--text)}
-    a{color:inherit}
+    body{margin:0;font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:var(--bg);color:var(--text)}
+    a{color:inherit;text-decoration:none}
     .wrap{max-width:1100px;margin:0 auto;padding:26px}
     .top{
       display:flex;gap:14px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;
@@ -42,25 +41,11 @@
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .bar{
+    .controls{
       display:flex;gap:10px;align-items:center;flex-wrap:wrap;
       padding:14px;
       border-bottom:1px solid rgba(255,255,255,.06);
     }
-    .btn{
-      font:inherit;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:#13223a;
-      color:var(--text);
-      cursor:pointer;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-    .btn:hover{border-color:#2a4260}
     .pill{
       display:inline-flex;align-items:center;gap:8px;
       border:1px solid var(--line);
@@ -69,112 +54,140 @@
       color:var(--muted);
       background:rgba(11,15,20,.35);
     }
-    .pill b{color:var(--text);font-weight:800}
-
-    .content{padding:14px}
-
-    .hero{
-      display:grid;
-      grid-template-columns: 1.35fr .65fr;
-      gap:14px;
-      align-items:start;
+    .pill b{color:var(--text);font-weight:700}
+    .btn{
+      font:inherit;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#13223a;
+      color:var(--text);
+      cursor:pointer;
     }
-    @media (max-width: 900px){ .hero{grid-template-columns:1fr;} }
+    .btn:hover{border-color:#2a4260}
+    .btnPrimary{
+      background:#0f2a4a;
+      border-color:#2a4260;
+    }
 
-    .gallery{
+    .content{
+      display:grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap:14px;
+      padding:14px;
+    }
+    @media (max-width: 980px){ .content{grid-template-columns:1fr;} }
+
+    .panel{
       border:1px solid var(--line);
       border-radius:16px;
-      overflow:hidden;
       background:#0b1220;
+      overflow:hidden;
     }
-    .galleryMain{
-      height: 420px;
+
+    .hero{
+      height:440px;
       background:#0c1320;
       border-bottom:1px solid rgba(255,255,255,.06);
-      position:relative;
+      display:grid;
+      place-items:center;
     }
-    @media (max-width: 640px){ .galleryMain{height: 280px;} }
-    .galleryMain img{
+    @media (max-width: 640px){ .hero{height:280px;} }
+
+    .hero img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
     }
+
     .thumbs{
       display:flex;
       gap:10px;
-      overflow:auto;
       padding:10px;
-      background:rgba(11,15,20,.35);
+      overflow:auto;
+      border-top:1px solid rgba(255,255,255,.06);
+      background:rgba(11,15,20,.25);
     }
     .thumb{
-      width:110px;
-      height:70px;
+      flex:0 0 auto;
+      width:120px;
+      height:74px;
       border-radius:12px;
-      overflow:hidden;
       border:1px solid rgba(255,255,255,.10);
-      flex: 0 0 auto;
+      overflow:hidden;
       cursor:pointer;
-      opacity:.86;
-      transition:opacity .12s ease, transform .12s ease, border-color .12s ease;
+      opacity:.9;
+      transition: transform .12s ease, opacity .12s ease, border-color .12s ease;
       background:#0c1320;
     }
-    .thumb:hover{opacity:1; transform: translateY(-1px); border-color:#2a4260;}
+    .thumb:hover{transform: translateY(-1px); opacity:1; border-color:#2a4260;}
     .thumb.active{opacity:1; border-color:#7ec8ff;}
     .thumb img{width:100%;height:100%;object-fit:cover;display:block}
 
-    .side{
-      border:1px solid var(--line);
-      border-radius:16px;
-      background:#0b1220;
-      padding:12px;
+    .details{
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
     }
-    .title{font-size:18px;font-weight:900;margin:0 0 6px}
-    .muted{color:var(--muted)}
-    .price{
-      margin-top:10px;
+    .title{font-weight:900;font-size:18px;line-height:1.2}
+    .meta{color:var(--muted);font-size:12px}
+    .priceRow{
+      display:flex;
+      align-items:baseline;
+      gap:8px;
       padding-top:10px;
       border-top:1px solid rgba(255,255,255,.06);
-      display:flex;
-      justify-content:space-between;
-      align-items:baseline;
+    }
+    .priceRow b{font-size:22px}
+    .grid2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
       gap:10px;
     }
-    .price b{font-size:22px}
+    @media (max-width: 420px){ .grid2{grid-template-columns:1fr;} }
     .kv{
-      margin-top:10px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:8px;
-    }
-    .kv .item{
       border:1px solid rgba(255,255,255,.08);
       border-radius:14px;
-      padding:10px;
-      background:rgba(12,19,32,.6);
+      padding:10px 12px;
+      background:rgba(11,15,20,.28);
     }
-    .kv .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .kv .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
     .kv .v{margin-top:4px;font-weight:800}
     .desc{
-      margin-top:14px;
-      border-top:1px solid rgba(255,255,255,.06);
-      padding-top:12px;
-      color:#cfe0f7;
+      color:var(--text);
+      background:rgba(11,15,20,.22);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      padding:12px;
       white-space:pre-wrap;
     }
-
-    .empty{
-      padding:18px;
-      color:var(--muted);
-      text-align:center;
+    .ctaRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      padding-top:10px;
+      border-top:1px solid rgba(255,255,255,.06);
+      margin-top:auto;
     }
-    .kcode{
-      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-      color:#cfe0f7;
+    .foot{
+      margin-top:16px;
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .note a{color:var(--accent);text-decoration:underline}
+    .center{
+      padding:22px;
+      text-align:center;
+      color:var(--muted);
     }
   </style>
 </head>
-
 <body>
   <div class="wrap">
     <div class="top">
@@ -193,26 +206,43 @@
     </div>
 
     <div class="card">
-      <div class="bar">
-        <a class="btn" href="/rentals/">
-          ← Back to Rentals
-        </a>
-        <button class="btn" id="btnRefresh">Refresh</button>
-
+      <div class="controls">
+        <a class="btn" href="/rentals/index.html">← Back to Rentals</a>
+        <button id="btnRefresh" class="btn">Refresh</button>
         <span class="pill" style="margin-left:auto;">
           <span>Slug:</span>
-          <b id="slugText" class="kcode">—</b>
+          <b id="slugText">—</b>
         </span>
       </div>
 
       <div id="content" class="content">
-        <div class="empty">Loading…</div>
+        <div class="panel">
+          <div class="hero" id="hero">
+            <div class="center">Loading…</div>
+          </div>
+          <div class="thumbs" id="thumbs" style="display:none;"></div>
+        </div>
+
+        <div class="panel">
+          <div class="details" id="details">
+            <div class="center">Loading…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="note">
+        Admin: <a href="https://admin.cfrihoa.com" target="_blank" rel="noopener">admin.cfrihoa.com</a>
+      </div>
+      <div class="note">
+        API: <a href="https://api.cfrihoa.com/api/listings" target="_blank" rel="noopener">/api/listings</a>
       </div>
     </div>
   </div>
 
 <script>
-  // Optional override:
+  // Optional runtime override:
   // <script>window.API_BASE="https://api.cfrihoa.com";</script>
   const API_BASE =
     (window.API_BASE && String(window.API_BASE)) ||
@@ -220,9 +250,7 @@
 
   const $ = (id) => document.getElementById(id);
 
-  function safeText(v){
-    return (v === null || v === undefined) ? "" : String(v);
-  }
+  function safeText(v){ return (v === null || v === undefined) ? "" : String(v); }
 
   function money(v){
     if (v === null || v === undefined || v === "") return "";
@@ -238,7 +266,7 @@
 
   function imgOrPlaceholder(url){
     return url ? url : "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`
-      <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+      <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900">
         <defs>
           <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stop-color="#121c2b"/>
@@ -247,7 +275,7 @@
         </defs>
         <rect width="100%" height="100%" fill="url(#g)"/>
         <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-              fill="#9fb0c3" font-family="system-ui,Segoe UI,Roboto" font-size="40">
+              fill="#9fb0c3" font-family="system-ui,Segoe UI,Roboto" font-size="44">
           No Photo
         </text>
       </svg>
@@ -255,28 +283,23 @@
   }
 
   function normalizePhotos(listing){
-    // Prefer API-provided `photos[]` with photo_url; fallback to primary_photo_url.
-    const arr = [];
-
+    // Prefer photo_url if present; fall back to primary_photo_url
+    const out = [];
     if (Array.isArray(listing.photos)) {
       for (const p of listing.photos) {
         const u = p && (p.photo_url || p.url || p.href);
-        if (u) arr.push(String(u));
+        if (u) out.push(String(u));
       }
     }
-
-    if (!arr.length && listing.primary_photo_url) {
-      arr.push(String(listing.primary_photo_url));
-    }
-
-    // ensure at least 1
-    if (!arr.length) arr.push("");
-
-    return arr.map(imgOrPlaceholder);
+    if (!out.length && listing.primary_photo_url) out.push(String(listing.primary_photo_url));
+    if (!out.length) out.push(imgOrPlaceholder(""));
+    return out;
   }
 
   function render(listing){
     const title = safeText(listing.title) || "(Untitled Listing)";
+    document.title = `CFRIHOA — ${title}`;
+
     const cityState = [safeText(listing.city), safeText(listing.state)].filter(Boolean).join(", ");
     const floor = safeText(listing.floor);
     const unit = safeText(listing.unit_code) ? ("Unit " + safeText(listing.unit_code)) : "";
@@ -288,90 +311,104 @@
     const parking = safeText(listing.parking);
 
     const photos = normalizePhotos(listing);
-    const main = photos[0];
+    const main = imgOrPlaceholder(photos[0]);
 
-    $("content").innerHTML = `
-      <div class="hero">
-        <div class="gallery">
-          <div class="galleryMain">
-            <img id="mainImg" src="${main}" alt="">
-          </div>
-          <div class="thumbs" id="thumbs"></div>
-        </div>
-
-        <div class="side">
-          <div class="title">${title}</div>
-          <div class="muted">${meta}</div>
-
-          <div class="price">
-            <div><b>${money(listing.price)}</b> <span class="muted">/ month</span></div>
-          </div>
-
-          <div class="kv">
-            <div class="item"><div class="k">Beds</div><div class="v">${beds || "—"}</div></div>
-            <div class="item"><div class="k">Baths</div><div class="v">${baths || "—"}</div></div>
-            <div class="item"><div class="k">Laundry</div><div class="v">${laundry || "—"}</div></div>
-            <div class="item"><div class="k">Parking</div><div class="v">${parking || "—"}</div></div>
-          </div>
-
-          <div class="desc">${safeText(listing.description) || ""}</div>
-        </div>
-      </div>
-    `;
+    // Left panel (hero + thumbs)
+    $("hero").innerHTML = `<img id="mainImg" src="${main}" alt="">`;
 
     const thumbs = $("thumbs");
     thumbs.innerHTML = "";
-
-    const mainImg = document.getElementById("mainImg");
-
-    photos.forEach((src, i) => {
-      const d = document.createElement("div");
-      d.className = "thumb" + (i === 0 ? " active" : "");
-      d.innerHTML = `<img src="${src}" alt="">`;
-      d.addEventListener("click", () => {
-        mainImg.src = src;
-        [...thumbs.children].forEach(x => x.classList.remove("active"));
-        d.classList.add("active");
+    if (photos.length > 1) {
+      thumbs.style.display = "flex";
+      photos.forEach((src, i) => {
+        const d = document.createElement("div");
+        d.className = "thumb" + (i === 0 ? " active" : "");
+        d.innerHTML = `<img src="${imgOrPlaceholder(src)}" alt="">`;
+        d.addEventListener("click", () => {
+          $("mainImg").src = imgOrPlaceholder(src);
+          [...thumbs.children].forEach(x => x.classList.remove("active"));
+          d.classList.add("active");
+        });
+        thumbs.appendChild(d);
       });
-      thumbs.appendChild(d);
-    });
+    } else {
+      thumbs.style.display = "none";
+    }
+
+    // Right panel (details)
+    $("details").innerHTML = `
+      <div class="title">${title}</div>
+      <div class="meta">${meta}</div>
+
+      <div class="priceRow">
+        <b>${money(listing.price)}</b>
+        <span class="meta">/ month</span>
+      </div>
+
+      <div class="grid2">
+        <div class="kv">
+          <div class="k">Beds</div>
+          <div class="v">${beds || "—"}</div>
+        </div>
+        <div class="kv">
+          <div class="k">Baths</div>
+          <div class="v">${baths || "—"}</div>
+        </div>
+        <div class="kv">
+          <div class="k">Laundry</div>
+          <div class="v">${laundry || "—"}</div>
+        </div>
+        <div class="kv">
+          <div class="k">Parking</div>
+          <div class="v">${parking || "—"}</div>
+        </div>
+      </div>
+
+      <div class="desc">${safeText(listing.description) || ""}</div>
+
+      <div class="ctaRow">
+        <a class="btn btnPrimary" href="tel:+14012102121">Call: (401) 210-2121</a>
+        <a class="btn" href="/rentals/index.html">View all rentals</a>
+      </div>
+    `;
   }
 
   async function load(){
     const slug = getSlug();
     $("slugText").textContent = slug || "—";
 
-    if (!slug){
+    if (!slug) {
       $("statusText").textContent = "Error";
-      $("content").innerHTML = `<div class="empty">Missing <span class="kcode">?slug=</span></div>`;
+      $("hero").innerHTML = `<div class="center">Missing <b>?slug=</b> in the URL.</div>`;
+      $("details").innerHTML = `<div class="center">Open from the rentals list, or add <b>?slug=your-slug</b>.</div>`;
       return;
     }
 
     $("statusText").textContent = "Loading…";
-    $("content").innerHTML = `<div class="empty">Loading…</div>`;
-
     try{
-      // IMPORTANT: API provides a LIST at /api/listings. We find the matching slug client-side.
+      // API returns LIST at /api/listings — we find the matching slug client-side
       const res = await fetch(API_BASE + "/api/listings", { method:"GET" });
       if (!res.ok) throw new Error(res.status + " " + res.statusText);
 
       const json = await res.json();
       const list = (json && Array.isArray(json.data)) ? json.data : [];
-
       const match = list.find(x => String(x.slug || "").trim() === slug);
 
-      if (!match){
+      if (!match) {
         $("statusText").textContent = "Online";
-        $("content").innerHTML = `<div class="empty">Listing not found (slug: <span class="kcode">${slug}</span>)</div>`;
+        $("hero").innerHTML = `<div class="center">Listing not found for slug:<br><b>${slug}</b></div>`;
+        $("details").innerHTML = `<div class="center">This listing may be unpublished or the slug changed.</div>`;
         return;
       }
 
       $("statusText").textContent = "Online";
       render(match);
-    }catch(err){
+
+    } catch (err) {
       console.error(err);
       $("statusText").textContent = "Error";
-      $("content").innerHTML = `<div class="empty">Could not load listing. Check API + CORS.</div>`;
+      $("hero").innerHTML = `<div class="center">Could not load listing photos.</div>`;
+      $("details").innerHTML = `<div class="center">Could not load listing. Check API + CORS.</div>`;
     }
   }
 
