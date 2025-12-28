@@ -3,15 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CFRIHOA — Available Rentals</title>
-  <meta name="description" content="Browse available CFRIHOA rental units in Central Falls, RI." />
-
-  <!-- Optional override (safe). You can change this later if your API host changes. -->
-  <script>
-    // If you ever want to point to a different API host, change this one line.
-    // If you remove this script, the page will still default to https://api.cfrihoa.com
-    window.API_BASE = "https://api.cfrihoa.com";
-  </script>
+  <title>CFRIHOA — Rental Listing</title>
+  <meta name="description" content="CFRIHOA rental listing details." />
 
   <style>
     :root{
@@ -21,25 +14,20 @@
       --text:#e7f0ff;
       --line:#203044;
       --accent:#7ec8ff;
-      --ok:#30c48d;
-      --bad:#ff5c5c;
       --shadow: 0 12px 30px rgba(0,0,0,.35);
       --radius: 18px;
     }
     *{box-sizing:border-box}
-    body{margin:0;font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:var(--bg);color:var(--text)}
-    a{color:inherit;text-decoration:none}
+    body{margin:0;font:14px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:var(--bg);color:var(--text)}
+    a{color:inherit}
     .wrap{max-width:1100px;margin:0 auto;padding:26px}
     .top{
       display:flex;gap:14px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;
       margin-bottom:18px;
     }
-    .brand{
-      display:flex;align-items:center;gap:12px;
-    }
+    .brand{display:flex;align-items:center;gap:12px}
     .logo{
-      width:44px;height:44px;border-radius:12px;
-      display:grid;place-items:center;
+      width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
       background:linear-gradient(180deg,#18263c,#0d1522);
       border:1px solid var(--line);
       box-shadow: var(--shadow);
@@ -52,29 +40,12 @@
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow: var(--shadow);
+      overflow:hidden;
     }
-    .controls{
+    .bar{
       display:flex;gap:10px;align-items:center;flex-wrap:wrap;
       padding:14px;
-    }
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 10px;
-      color:var(--muted);
-      background:rgba(11,15,20,.35);
-    }
-    .pill b{color:var(--text);font-weight:700}
-    .input, select{
-      font:inherit;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background:#0c1320;
-      color:var(--text);
-      min-width: 220px;
-      outline:none;
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
     .btn{
       font:inherit;
@@ -84,90 +55,126 @@
       background:#13223a;
       color:var(--text);
       cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
     }
     .btn:hover{border-color:#2a4260}
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:14px;
-      padding:14px;
-    }
-    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr);} }
-    @media (max-width: 640px){
-      .grid{grid-template-columns:1fr;}
-      .input, select{min-width: 1px; width:100%;}
-    }
-    .listing{
-      overflow:hidden;
-      border-radius:16px;
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
       border:1px solid var(--line);
-      background:#0b1220;
-      display:flex;
-      flex-direction:column;
-      min-height: 340px;
-      transition: transform .12s ease, border-color .12s ease;
+      border-radius:999px;
+      padding:8px 10px;
+      color:var(--muted);
+      background:rgba(11,15,20,.35);
     }
-    .listing:hover{
-      transform: translateY(-2px);
-      border-color:#2a4260;
+    .pill b{color:var(--text);font-weight:800}
+
+    .content{padding:14px}
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap:14px;
+      align-items:start;
     }
-    .img{
-      height:170px;
-      background:#0c1320;
-      border-bottom:1px solid var(--line);
-      position:relative;
+    @media (max-width: 900px){ .hero{grid-template-columns:1fr;} }
+
+    .gallery{
+      border:1px solid var(--line);
+      border-radius:16px;
       overflow:hidden;
+      background:#0b1220;
     }
-    .img img{
+    .galleryMain{
+      height: 420px;
+      background:#0c1320;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      position:relative;
+    }
+    @media (max-width: 640px){ .galleryMain{height: 280px;} }
+    .galleryMain img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
-      transform: scale(1.02);
     }
-    .badge{
-      position:absolute;left:10px;top:10px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(11,15,20,.55);
-      backdrop-filter: blur(6px);
-      color:var(--text);
-      font-size:12px;
+    .thumbs{
+      display:flex;
+      gap:10px;
+      overflow:auto;
+      padding:10px;
+      background:rgba(11,15,20,.35);
     }
-    .body{padding:12px 12px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
-    .title{font-weight:800;font-size:15px}
-    .meta{color:var(--muted);font-size:12px}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .k{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+    .thumb{
+      width:110px;
+      height:70px;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      flex: 0 0 auto;
+      cursor:pointer;
+      opacity:.86;
+      transition:opacity .12s ease, transform .12s ease, border-color .12s ease;
+      background:#0c1320;
+    }
+    .thumb:hover{opacity:1; transform: translateY(-1px); border-color:#2a4260;}
+    .thumb.active{opacity:1; border-color:#7ec8ff;}
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+
+    .side{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#0b1220;
+      padding:12px;
+    }
+    .title{font-size:18px;font-weight:900;margin:0 0 6px}
+    .muted{color:var(--muted)}
     .price{
-      margin-top:auto;
-      display:flex;justify-content:space-between;align-items:center;gap:10px;
+      margin-top:10px;
       padding-top:10px;
       border-top:1px solid rgba(255,255,255,.06);
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      gap:10px;
     }
-    .price b{font-size:16px}
-    .cta{
-      color:var(--accent);
-      font-weight:700;
+    .price b{font-size:22px}
+    .kv{
+      margin-top:10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:8px;
     }
+    .kv .item{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      padding:10px;
+      background:rgba(12,19,32,.6);
+    }
+    .kv .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .kv .v{margin-top:4px;font-weight:800}
+    .desc{
+      margin-top:14px;
+      border-top:1px solid rgba(255,255,255,.06);
+      padding-top:12px;
+      color:#cfe0f7;
+      white-space:pre-wrap;
+    }
+
     .empty{
       padding:18px;
       color:var(--muted);
       text-align:center;
     }
-    .foot{
-      margin-top:16px;
-      color:var(--muted);
-      font-size:12px;
-      display:flex;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap:10px;
+    .kcode{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      color:#cfe0f7;
     }
-    .note a{color:var(--accent);text-decoration:underline}
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="top">
@@ -175,7 +182,7 @@
         <div class="logo">🏠</div>
         <div>
           <h1>CFRIHOA</h1>
-          <div class="sub">Available rental units</div>
+          <div class="sub">Rental listing details</div>
         </div>
       </div>
 
@@ -186,192 +193,190 @@
     </div>
 
     <div class="card">
-      <div class="controls">
-        <input id="q" class="input" placeholder="Search (title, floor, unit code…)" />
-        <select id="sort">
-          <option value="updated_desc">Sort: Recently updated</option>
-          <option value="price_asc">Sort: Price (low → high)</option>
-          <option value="price_desc">Sort: Price (high → low)</option>
-          <option value="beds_desc">Sort: Beds (high → low)</option>
-        </select>
-        <button id="btnRefresh" class="btn" type="button">Refresh</button>
+      <div class="bar">
+        <a class="btn" href="/rentals/">
+          ← Back to Rentals
+        </a>
+        <button class="btn" id="btnRefresh">Refresh</button>
 
-        <span class="pill">
-          <span>Results:</span>
-          <b id="count">0</b>
+        <span class="pill" style="margin-left:auto;">
+          <span>Slug:</span>
+          <b id="slugText" class="kcode">—</b>
         </span>
       </div>
 
-      <div id="grid" class="grid"></div>
-      <div id="empty" class="empty" style="display:none;">No available listings found.</div>
-    </div>
-
-    <div class="foot">
-      <div class="note">
-        Admin: <a href="https://admin.cfrihoa.com" target="_blank" rel="noopener">admin.cfrihoa.com</a>
-      </div>
-      <div class="note">
-        API: <a href="https://api.cfrihoa.com/api/listings" target="_blank" rel="noopener">/api/listings</a>
+      <div id="content" class="content">
+        <div class="empty">Loading…</div>
       </div>
     </div>
   </div>
 
-  <script>
-    // IMPORTANT:
-    // If you ever see the JS printed on the page, it means your deployed HTML
-    // has stray text outside <script> tags. View-source and remove that stray text.
+<script>
+  // Optional override:
+  // <script>window.API_BASE="https://api.cfrihoa.com";</script>
+  const API_BASE =
+    (window.API_BASE && String(window.API_BASE)) ||
+    "https://api.cfrihoa.com";
 
-    const API_BASE =
-      (window.API_BASE && String(window.API_BASE).trim().replace(/\/$/, "")) ||
-      "https://api.cfrihoa.com";
+  const $ = (id) => document.getElementById(id);
 
-    const $ = (id) => document.getElementById(id);
+  function safeText(v){
+    return (v === null || v === undefined) ? "" : String(v);
+  }
 
-    // Inline SVG placeholder (as a data URL)
-    function placeholderDataUrl(){
-      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
-          <defs>
-            <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#121c2b"/>
-              <stop offset="1" stop-color="#0b1220"/>
-            </linearGradient>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#g)"/>
-          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-                fill="#9fb0c3" font-family="system-ui,Segoe UI,Roboto" font-size="40">
-            No Photo
-          </text>
-        </svg>
-      `);
-    }
+  function money(v){
+    if (v === null || v === undefined || v === "") return "";
+    const n = Number(v);
+    if (!Number.isFinite(n)) return String(v);
+    return n.toLocaleString(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 });
+  }
 
-    function imgOrPlaceholder(url){
-      return url ? url : placeholderDataUrl();
-    }
+  function getSlug(){
+    const params = new URLSearchParams(location.search);
+    return (params.get("slug") || "").trim();
+  }
 
-    let all = [];
+  function imgOrPlaceholder(url){
+    return url ? url : "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#121c2b"/>
+            <stop offset="1" stop-color="#0b1220"/>
+          </linearGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#g)"/>
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+              fill="#9fb0c3" font-family="system-ui,Segoe UI,Roboto" font-size="40">
+          No Photo
+        </text>
+      </svg>
+    `);
+  }
 
-    function money(v){
-      if (v === null || v === undefined || v === "") return "";
-      const n = Number(v);
-      if (!Number.isFinite(n)) return String(v);
-      return n.toLocaleString(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 });
-    }
+  function normalizePhotos(listing){
+    // Prefer API-provided `photos[]` with photo_url; fallback to primary_photo_url.
+    const arr = [];
 
-    function safeText(v){
-      return (v === null || v === undefined) ? "" : String(v);
-    }
-
-    function sortListings(list, mode){
-      const arr = [...list];
-      switch(mode){
-        case "price_asc":
-          arr.sort((a,b)=>(Number(a.price)||0)-(Number(b.price)||0)); break;
-        case "price_desc":
-          arr.sort((a,b)=>(Number(b.price)||0)-(Number(a.price)||0)); break;
-        case "beds_desc":
-          arr.sort((a,b)=>(Number(b.beds)||0)-(Number(a.beds)||0)); break;
-        case "updated_desc":
-        default:
-          arr.sort((a,b)=> (safeText(b.updated_at)).localeCompare(safeText(a.updated_at)));
+    if (Array.isArray(listing.photos)) {
+      for (const p of listing.photos) {
+        const u = p && (p.photo_url || p.url || p.href);
+        if (u) arr.push(String(u));
       }
-      return arr;
     }
 
-    function filterListings(list, q){
-      q = (q||"").trim().toLowerCase();
-      if (!q) return list;
-      return list.filter(l=>{
-        const hay = [
-          l.title, l.slug, l.city, l.state, l.floor, l.unit_code,
-          l.description, String(l.price||""), String(l.beds||""), String(l.baths||"")
-        ].map(safeText).join(" ").toLowerCase();
-        return hay.includes(q);
+    if (!arr.length && listing.primary_photo_url) {
+      arr.push(String(listing.primary_photo_url));
+    }
+
+    // ensure at least 1
+    if (!arr.length) arr.push("");
+
+    return arr.map(imgOrPlaceholder);
+  }
+
+  function render(listing){
+    const title = safeText(listing.title) || "(Untitled Listing)";
+    const cityState = [safeText(listing.city), safeText(listing.state)].filter(Boolean).join(", ");
+    const floor = safeText(listing.floor);
+    const unit = safeText(listing.unit_code) ? ("Unit " + safeText(listing.unit_code)) : "";
+    const meta = [cityState, floor, unit].filter(Boolean).join(" • ");
+
+    const beds = safeText(listing.beds);
+    const baths = safeText(listing.baths);
+    const laundry = safeText(listing.laundry);
+    const parking = safeText(listing.parking);
+
+    const photos = normalizePhotos(listing);
+    const main = photos[0];
+
+    $("content").innerHTML = `
+      <div class="hero">
+        <div class="gallery">
+          <div class="galleryMain">
+            <img id="mainImg" src="${main}" alt="">
+          </div>
+          <div class="thumbs" id="thumbs"></div>
+        </div>
+
+        <div class="side">
+          <div class="title">${title}</div>
+          <div class="muted">${meta}</div>
+
+          <div class="price">
+            <div><b>${money(listing.price)}</b> <span class="muted">/ month</span></div>
+          </div>
+
+          <div class="kv">
+            <div class="item"><div class="k">Beds</div><div class="v">${beds || "—"}</div></div>
+            <div class="item"><div class="k">Baths</div><div class="v">${baths || "—"}</div></div>
+            <div class="item"><div class="k">Laundry</div><div class="v">${laundry || "—"}</div></div>
+            <div class="item"><div class="k">Parking</div><div class="v">${parking || "—"}</div></div>
+          </div>
+
+          <div class="desc">${safeText(listing.description) || ""}</div>
+        </div>
+      </div>
+    `;
+
+    const thumbs = $("thumbs");
+    thumbs.innerHTML = "";
+
+    const mainImg = document.getElementById("mainImg");
+
+    photos.forEach((src, i) => {
+      const d = document.createElement("div");
+      d.className = "thumb" + (i === 0 ? " active" : "");
+      d.innerHTML = `<img src="${src}" alt="">`;
+      d.addEventListener("click", () => {
+        mainImg.src = src;
+        [...thumbs.children].forEach(x => x.classList.remove("active"));
+        d.classList.add("active");
       });
+      thumbs.appendChild(d);
+    });
+  }
+
+  async function load(){
+    const slug = getSlug();
+    $("slugText").textContent = slug || "—";
+
+    if (!slug){
+      $("statusText").textContent = "Error";
+      $("content").innerHTML = `<div class="empty">Missing <span class="kcode">?slug=</span></div>`;
+      return;
     }
 
-    function render(){
-      const q = $("q").value;
-      const sortMode = $("sort").value;
+    $("statusText").textContent = "Loading…";
+    $("content").innerHTML = `<div class="empty">Loading…</div>`;
 
-      const filtered = sortListings(filterListings(all, q), sortMode);
-      $("count").textContent = String(filtered.length);
+    try{
+      // IMPORTANT: API provides a LIST at /api/listings. We find the matching slug client-side.
+      const res = await fetch(API_BASE + "/api/listings", { method:"GET" });
+      if (!res.ok) throw new Error(res.status + " " + res.statusText);
 
-      const grid = $("grid");
-      grid.innerHTML = "";
+      const json = await res.json();
+      const list = (json && Array.isArray(json.data)) ? json.data : [];
 
-      $("empty").style.display = filtered.length ? "none" : "";
+      const match = list.find(x => String(x.slug || "").trim() === slug);
 
-      const placeholder = placeholderDataUrl();
-
-      for (const l of filtered){
-        const href = "/rentals/listing.html?slug=" + encodeURIComponent(l.slug);
-
-        const beds = (l.beds ?? "") !== "" ? `${l.beds} bd` : "";
-        const baths = (l.baths ?? "") !== "" ? `${l.baths} ba` : "";
-        const place = [beds, baths].filter(Boolean).join(" • ");
-
-        const photo = imgOrPlaceholder(l.primary_photo_url);
-
-        const metaLine = [
-          [safeText(l.city), safeText(l.state)].filter(Boolean).join(", "),
-          safeText(l.floor),
-          safeText(l.unit_code) ? ("Unit " + safeText(l.unit_code)) : ""
-        ].filter(Boolean).join(" • ");
-
-        const desc = safeText(l.description);
-        const shortDesc = desc.slice(0, 110) + (desc.length > 110 ? "…" : "");
-
-        const card = document.createElement("a");
-        card.className = "listing";
-        card.href = href;
-
-        // NOTE: onerror fallback prevents broken image icons.
-        card.innerHTML = `
-          <div class="img">
-            <img src="${photo}" alt="" loading="lazy"
-                 onerror="this.onerror=null;this.src='${placeholder}';">
-            <div class="badge">${place || "Available"}</div>
-          </div>
-          <div class="body">
-            <div class="title">${safeText(l.title) || "(Untitled Listing)"}</div>
-            <div class="meta">${metaLine}</div>
-            <div class="meta">${shortDesc}</div>
-            <div class="price">
-              <div><b>${money(l.price)}</b> <span class="meta">/ month</span></div>
-              <div class="cta">View →</div>
-            </div>
-          </div>
-        `;
-        grid.appendChild(card);
-      }
-    }
-
-    async function load(){
-      $("statusText").textContent = "Loading…";
-      try{
-        const res = await fetch(API_BASE + "/api/listings", { method:"GET" });
-        if (!res.ok) throw new Error(res.status + " " + res.statusText);
-        const data = await res.json();
-
-        all = Array.isArray(data.data) ? data.data : [];
+      if (!match){
         $("statusText").textContent = "Online";
-        render();
-      }catch(err){
-        console.error(err);
-        $("statusText").textContent = "Error";
-        $("grid").innerHTML = "";
-        $("empty").style.display = "";
-        $("empty").textContent = "Could not load listings. Check API and CORS.";
+        $("content").innerHTML = `<div class="empty">Listing not found (slug: <span class="kcode">${slug}</span>)</div>`;
+        return;
       }
+
+      $("statusText").textContent = "Online";
+      render(match);
+    }catch(err){
+      console.error(err);
+      $("statusText").textContent = "Error";
+      $("content").innerHTML = `<div class="empty">Could not load listing. Check API + CORS.</div>`;
     }
+  }
 
-    $("q").addEventListener("input", render);
-    $("sort").addEventListener("change", render);
-    $("btnRefresh").addEventListener("click", load);
-
-    load();
-  </script>
+  $("btnRefresh").addEventListener("click", load);
+  load();
+</script>
 </body>
 </html>
