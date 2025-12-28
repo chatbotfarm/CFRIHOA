@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>CFRIHOA — Available Rentals</title>
   <meta name="description" content="Browse available CFRIHOA rental units in Central Falls, RI." />
+
   <style>
     :root{
       --bg:#0b0f14;
@@ -13,8 +14,6 @@
       --text:#e7f0ff;
       --line:#203044;
       --accent:#7ec8ff;
-      --ok:#30c48d;
-      --bad:#ff5c5c;
       --shadow: 0 12px 30px rgba(0,0,0,.35);
       --radius: 18px;
     }
@@ -26,12 +25,9 @@
       display:flex;gap:14px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;
       margin-bottom:18px;
     }
-    .brand{
-      display:flex;align-items:center;gap:12px;
-    }
+    .brand{display:flex;align-items:center;gap:12px;}
     .logo{
-      width:44px;height:44px;border-radius:12px;
-      display:grid;place-items:center;
+      width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
       background:linear-gradient(180deg,#18263c,#0d1522);
       border:1px solid var(--line);
       box-shadow: var(--shadow);
@@ -39,6 +35,7 @@
     }
     h1{margin:0;font-size:24px;letter-spacing:.4px}
     .sub{margin:4px 0 0;color:var(--muted)}
+
     .card{
       background:linear-gradient(180deg,#121c2b,#0f1725);
       border:1px solid var(--line);
@@ -89,6 +86,7 @@
       .grid{grid-template-columns:1fr;}
       .input, select{min-width: 1px; width:100%;}
     }
+
     .listing{
       overflow:hidden;
       border-radius:16px;
@@ -99,10 +97,8 @@
       min-height: 340px;
       transition: transform .12s ease, border-color .12s ease;
     }
-    .listing:hover{
-      transform: translateY(-2px);
-      border-color:#2a4260;
-    }
+    .listing:hover{transform: translateY(-2px);border-color:#2a4260;}
+
     .img{
       height:170px;
       background:#0c1320;
@@ -110,17 +106,10 @@
       position:relative;
       overflow:hidden;
     }
-    .img img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      transform: scale(1.02);
-    }
+    .img img{width:100%;height:100%;object-fit:cover;display:block;transform: scale(1.02);}
     .badge{
       position:absolute;left:10px;top:10px;
-      padding:6px 10px;
-      border-radius:999px;
+      padding:6px 10px;border-radius:999px;
       border:1px solid rgba(255,255,255,.12);
       background:rgba(11,15,20,.55);
       backdrop-filter: blur(6px);
@@ -130,36 +119,22 @@
     .body{padding:12px 12px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
     .title{font-weight:800;font-size:15px}
     .meta{color:var(--muted);font-size:12px}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .k{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
     .price{
       margin-top:auto;
       display:flex;justify-content:space-between;align-items:center;gap:10px;
-      padding-top:10px;
-      border-top:1px solid rgba(255,255,255,.06);
+      padding-top:10px;border-top:1px solid rgba(255,255,255,.06);
     }
     .price b{font-size:16px}
-    .cta{
-      color:var(--accent);
-      font-weight:700;
-    }
-    .empty{
-      padding:18px;
-      color:var(--muted);
-      text-align:center;
-    }
+    .cta{color:var(--accent);font-weight:700;}
+    .empty{padding:18px;color:var(--muted);text-align:center;}
     .foot{
-      margin-top:16px;
-      color:var(--muted);
-      font-size:12px;
-      display:flex;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap:10px;
+      margin-top:16px;color:var(--muted);font-size:12px;
+      display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
     }
     .note a{color:var(--accent);text-decoration:underline}
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="top">
@@ -186,7 +161,7 @@
           <option value="price_desc">Sort: Price (high → low)</option>
           <option value="beds_desc">Sort: Beds (high → low)</option>
         </select>
-        <button id="btnRefresh" class="btn">Refresh</button>
+        <button id="btnRefresh" class="btn" type="button">Refresh</button>
 
         <span class="pill">
           <span>Results:</span>
@@ -208,147 +183,152 @@
     </div>
   </div>
 
-<script>
-  // You can override at runtime by adding:
-  // <script>window.API_BASE="https://api.cfrihoa.com";</script>
-  // before this script tag (or set it in Cloudflare Pages build env later if you add a build step).
-  const API_BASE =
-    (window.API_BASE && String(window.API_BASE)) ||
-    "https://api.cfrihoa.com";
+  <script>
+    (function () {
+      // If you set a Cloudflare Pages env var named API_BASE, it will NOT automatically appear in window.
+      // So we default to the known URL. If you later inject window.API_BASE manually, it will override.
+      var API_BASE = (window.API_BASE && String(window.API_BASE)) || "https://api.cfrihoa.com";
 
-  const $ = (id) => document.getElementById(id);
+      function $(id){ return document.getElementById(id); }
 
-  let all = [];
+      var all = [];
 
-  function money(v){
-    if (v === null || v === undefined || v === "") return "";
-    const n = Number(v);
-    if (!Number.isFinite(n)) return String(v);
-    return n.toLocaleString(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 });
-  }
+      function safeText(v){
+        return (v === null || v === undefined) ? "" : String(v);
+      }
 
-  function safeText(v){
-    return (v === null || v === undefined) ? "" : String(v);
-  }
+      function money(v){
+        if (v === null || v === undefined || v === "") return "";
+        var n = Number(v);
+        if (!Number.isFinite(n)) return String(v);
+        return n.toLocaleString(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 });
+      }
 
-  function imgOrPlaceholder(url){
-    // Simple placeholder if missing
-    return url ? url : "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`
-      <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
-        <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#121c2b"/>
-            <stop offset="1" stop-color="#0b1220"/>
-          </linearGradient>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#g)"/>
-        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-              fill="#9fb0c3" font-family="system-ui,Segoe UI,Roboto" font-size="40">
-          No Photo
-        </text>
-      </svg>
-    `);
-  }
+      function placeholderDataUrl(){
+        var svg =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">' +
+          '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">' +
+          '<stop offset="0" stop-color="#121c2b"/>' +
+          '<stop offset="1" stop-color="#0b1220"/>' +
+          '</linearGradient></defs>' +
+          '<rect width="100%" height="100%" fill="url(#g)"/>' +
+          '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"' +
+          ' fill="#9fb0c3" font-family="system-ui,Segoe UI,Roboto" font-size="40">' +
+          'No Photo</text></svg>';
+        return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+      }
 
-  function sortListings(list, mode){
-    const arr = [...list];
-    switch(mode){
-      case "price_asc":
-        arr.sort((a,b)=>(Number(a.price)||0)-(Number(b.price)||0)); break;
-      case "price_desc":
-        arr.sort((a,b)=>(Number(b.price)||0)-(Number(a.price)||0)); break;
-      case "beds_desc":
-        arr.sort((a,b)=>(Number(b.beds)||0)-(Number(a.beds)||0)); break;
-      case "updated_desc":
-      default:
-        arr.sort((a,b)=> (safeText(b.updated_at)).localeCompare(safeText(a.updated_at)));
-    }
-    return arr;
-  }
+      function imgOrPlaceholder(url){
+        return url ? url : placeholderDataUrl();
+      }
 
-  function filterListings(list, q){
-    q = (q||"").trim().toLowerCase();
-    if (!q) return list;
-    return list.filter(l=>{
-      const hay = [
-        l.title, l.slug, l.city, l.state, l.floor, l.unit_code,
-        l.description, String(l.price||""), String(l.beds||""), String(l.baths||"")
-      ].map(safeText).join(" ").toLowerCase();
-      return hay.includes(q);
-    });
-  }
+      function sortListings(list, mode){
+        var arr = list.slice();
+        switch(mode){
+          case "price_asc":
+            arr.sort(function(a,b){ return (Number(a.price)||0) - (Number(b.price)||0); }); break;
+          case "price_desc":
+            arr.sort(function(a,b){ return (Number(b.price)||0) - (Number(a.price)||0); }); break;
+          case "beds_desc":
+            arr.sort(function(a,b){ return (Number(b.beds)||0) - (Number(a.beds)||0); }); break;
+          case "updated_desc":
+          default:
+            arr.sort(function(a,b){ return safeText(b.updated_at).localeCompare(safeText(a.updated_at)); });
+        }
+        return arr;
+      }
 
-  function render(){
-    const q = $("q").value;
-    const sortMode = $("sort").value;
+      function filterListings(list, q){
+        q = (q||"").trim().toLowerCase();
+        if (!q) return list;
+        return list.filter(function(l){
+          var hay = [
+            l.title, l.slug, l.city, l.state, l.floor, l.unit_code,
+            l.description, String(l.price||""), String(l.beds||""), String(l.baths||"")
+          ].map(safeText).join(" ").toLowerCase();
+          return hay.indexOf(q) !== -1;
+        });
+      }
 
-    const filtered = sortListings(filterListings(all, q), sortMode);
-    $("count").textContent = String(filtered.length);
+      function render(){
+        var q = $("q").value;
+        var sortMode = $("sort").value;
 
-    const grid = $("grid");
-    grid.innerHTML = "";
+        var filtered = sortListings(filterListings(all, q), sortMode);
+        $("count").textContent = String(filtered.length);
 
-    $("empty").style.display = filtered.length ? "none" : "";
+        var grid = $("grid");
+        grid.innerHTML = "";
 
-    for (const l of filtered){
-      const href = "/listing.html?slug=" + encodeURIComponent(l.slug);
-      const beds = (l.beds ?? "") !== "" ? `${l.beds} bd` : "";
-      const baths = (l.baths ?? "") !== "" ? `${l.baths} ba` : "";
-      const place = [beds, baths].filter(Boolean).join(" • ");
+        $("empty").style.display = filtered.length ? "none" : "";
 
-      const photo = imgOrPlaceholder(l.primary_photo_url);
-      const metaLine = [
-        [safeText(l.city), safeText(l.state)].filter(Boolean).join(", "),
-        safeText(l.floor),
-        safeText(l.unit_code) ? ("Unit " + safeText(l.unit_code)) : ""
-      ].filter(Boolean).join(" • ");
+        for (var i=0;i<filtered.length;i++){
+          var l = filtered[i];
+          var href = "/rentals/listing.html?slug=" + encodeURIComponent(l.slug);
 
-      const card = document.createElement("a");
-      card.className = "listing";
-      card.href = href;
-      card.innerHTML = `
-        <div class="img">
-          <img src="${photo}" alt="">
-          <div class="badge">${place || "Available"}</div>
-        </div>
-        <div class="body">
-          <div class="title">${safeText(l.title) || "(Untitled Listing)"}</div>
-          <div class="meta">${metaLine}</div>
-          <div class="meta">${safeText(l.description).slice(0, 110)}${safeText(l.description).length > 110 ? "…" : ""}</div>
-          <div class="price">
-            <div><b>${money(l.price)}</b> <span class="meta">/ month</span></div>
-            <div class="cta">View →</div>
-          </div>
-        </div>
-      `;
-      grid.appendChild(card);
-    }
-  }
+          var beds = (l.beds !== null && l.beds !== undefined && l.beds !== "") ? (l.beds + " bd") : "";
+          var baths = (l.baths !== null && l.baths !== undefined && l.baths !== "") ? (l.baths + " ba") : "";
+          var place = [beds, baths].filter(Boolean).join(" • ");
 
-  async function load(){
-    $("statusText").textContent = "Loading…";
-    try{
-      const res = await fetch(API_BASE + "/api/listings", { method:"GET" });
-      if (!res.ok) throw new Error(res.status + " " + res.statusText);
-      const data = await res.json();
+          var photo = imgOrPlaceholder(l.primary_photo_url);
 
-      all = Array.isArray(data.data) ? data.data : [];
-      $("statusText").textContent = "Online";
-      render();
-    }catch(err){
-      console.error(err);
-      $("statusText").textContent = "Error";
-      $("grid").innerHTML = "";
-      $("empty").style.display = "";
-      $("empty").textContent = "Could not load listings. Check API and CORS.";
-    }
-  }
+          var metaLine = [
+            [safeText(l.city), safeText(l.state)].filter(Boolean).join(", "),
+            safeText(l.floor),
+            safeText(l.unit_code) ? ("Unit " + safeText(l.unit_code)) : ""
+          ].filter(Boolean).join(" • ");
 
-  $("q").addEventListener("input", render);
-  $("sort").addEventListener("change", render);
-  $("btnRefresh").addEventListener("click", load);
+          var desc = safeText(l.description);
+          var descShort = desc.slice(0, 110) + (desc.length > 110 ? "…" : "");
 
-  load();
-</script>
+          var card = document.createElement("a");
+          card.className = "listing";
+          card.href = href;
+
+          card.innerHTML =
+            '<div class="img">' +
+              '<img src="' + photo + '" alt="">' +
+              '<div class="badge">' + (place || "Available") + '</div>' +
+            '</div>' +
+            '<div class="body">' +
+              '<div class="title">' + (safeText(l.title) || "(Untitled Listing)") + '</div>' +
+              '<div class="meta">' + metaLine + '</div>' +
+              '<div class="meta">' + descShort + '</div>' +
+              '<div class="price">' +
+                '<div><b>' + money(l.price) + '</b> <span class="meta">/ month</span></div>' +
+                '<div class="cta">View →</div>' +
+              '</div>' +
+            '</div>';
+
+          grid.appendChild(card);
+        }
+      }
+
+      async function load(){
+        $("statusText").textContent = "Loading…";
+        try{
+          var res = await fetch(API_BASE + "/api/listings", { method:"GET" });
+          if (!res.ok) throw new Error(res.status + " " + res.statusText);
+          var data = await res.json();
+
+          all = Array.isArray(data.data) ? data.data : [];
+          $("statusText").textContent = "Online";
+          render();
+        }catch(err){
+          console.error(err);
+          $("statusText").textContent = "Error";
+          $("grid").innerHTML = "";
+          $("empty").style.display = "";
+          $("empty").textContent = "Could not load listings. Check API and CORS.";
+        }
+      }
+
+      $("q").addEventListener("input", render);
+      $("sort").addEventListener("change", render);
+      $("btnRefresh").addEventListener("click", load);
+
+      load();
+    })();
+  </script>
 </body>
 </html>
