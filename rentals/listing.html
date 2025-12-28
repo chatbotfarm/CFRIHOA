@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>CFRIHOA — Rental Listing</title>
   <meta name="description" content="CFRIHOA rental listing details." />
+
   <style>
     :root{
       --bg:#0b0f14;
@@ -20,11 +21,12 @@
     body{margin:0;font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:var(--bg);color:var(--text)}
     a{color:inherit;text-decoration:none}
     .wrap{max-width:1100px;margin:0 auto;padding:26px}
+
     .top{
       display:flex;gap:14px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;
       margin-bottom:18px;
     }
-    .brand{display:flex;align-items:center;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px;}
     .logo{
       width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
       background:linear-gradient(180deg,#18263c,#0d1522);
@@ -34,18 +36,7 @@
     }
     h1{margin:0;font-size:24px;letter-spacing:.4px}
     .sub{margin:4px 0 0;color:var(--muted)}
-    .card{
-      background:linear-gradient(180deg,#121c2b,#0f1725);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .controls{
-      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-      padding:14px;
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
+
     .pill{
       display:inline-flex;align-items:center;gap:8px;
       border:1px solid var(--line);
@@ -55,6 +46,20 @@
       background:rgba(11,15,20,.35);
     }
     .pill b{color:var(--text);font-weight:700}
+
+    .card{
+      background:linear-gradient(180deg,#121c2b,#0f1725);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .controls{
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+      padding:14px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
     .btn{
       font:inherit;
       padding:10px 12px;
@@ -65,129 +70,111 @@
       cursor:pointer;
     }
     .btn:hover{border-color:#2a4260}
-    .btnPrimary{
-      background:#0f2a4a;
-      border-color:#2a4260;
-    }
 
-    .content{
+    .layout{
       display:grid;
       grid-template-columns: 1.6fr 1fr;
       gap:14px;
       padding:14px;
     }
-    @media (max-width: 980px){ .content{grid-template-columns:1fr;} }
+    @media (max-width: 980px){ .layout{grid-template-columns: 1fr;} }
 
     .panel{
       border:1px solid var(--line);
       border-radius:16px;
       background:#0b1220;
       overflow:hidden;
+      min-height: 340px;
     }
 
-    .hero{
-      height:440px;
-      background:#0c1320;
-      border-bottom:1px solid rgba(255,255,255,.06);
+    .gallery{
       display:grid;
-      place-items:center;
+      grid-template-rows: 360px auto;
+      height:100%;
     }
-    @media (max-width: 640px){ .hero{height:280px;} }
+    @media (max-width: 980px){ .gallery{grid-template-rows: 280px auto;} }
 
-    .hero img{
+    .mainImg{
       width:100%;
       height:100%;
-      object-fit:cover;
+      background:#0c1320;
+      border-bottom:1px solid rgba(255,255,255,.06);
       display:block;
+      object-fit:cover;
     }
 
     .thumbs{
       display:flex;
       gap:10px;
-      padding:10px;
+      padding:12px;
       overflow:auto;
-      border-top:1px solid rgba(255,255,255,.06);
-      background:rgba(11,15,20,.25);
     }
     .thumb{
-      flex:0 0 auto;
-      width:120px;
-      height:74px;
+      width:110px;
+      height:70px;
       border-radius:12px;
       border:1px solid rgba(255,255,255,.10);
       overflow:hidden;
+      flex:0 0 auto;
       cursor:pointer;
       opacity:.9;
-      transition: transform .12s ease, opacity .12s ease, border-color .12s ease;
-      background:#0c1320;
     }
-    .thumb:hover{transform: translateY(-1px); opacity:1; border-color:#2a4260;}
-    .thumb.active{opacity:1; border-color:#7ec8ff;}
     .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .thumb.active{border-color:#2a4260;opacity:1}
 
     .details{
       padding:14px;
       display:flex;
       flex-direction:column;
-      gap:12px;
-    }
-    .title{font-weight:900;font-size:18px;line-height:1.2}
-    .meta{color:var(--muted);font-size:12px}
-    .priceRow{
-      display:flex;
-      align-items:baseline;
-      gap:8px;
-      padding-top:10px;
-      border-top:1px solid rgba(255,255,255,.06);
-    }
-    .priceRow b{font-size:22px}
-    .grid2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
       gap:10px;
     }
-    @media (max-width: 420px){ .grid2{grid-template-columns:1fr;} }
+    .title{
+      font-weight:900;
+      font-size:18px;
+      line-height:1.2;
+    }
+    .meta{color:var(--muted);font-size:13px}
+    .price{
+      margin-top:4px;
+      font-size:22px;
+      font-weight:900;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:6px;
+    }
     .kv{
       border:1px solid rgba(255,255,255,.08);
       border-radius:14px;
-      padding:10px 12px;
-      background:rgba(11,15,20,.28);
+      padding:10px;
+      background:rgba(11,15,20,.25);
     }
-    .kv .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
-    .kv .v{margin-top:4px;font-weight:800}
+    .kv .k{color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+    .kv .v{margin-top:4px;font-weight:700}
+
     .desc{
+      margin-top:6px;
       color:var(--text);
-      background:rgba(11,15,20,.22);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:14px;
-      padding:12px;
+      opacity:.92;
       white-space:pre-wrap;
     }
-    .ctaRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      padding-top:10px;
-      border-top:1px solid rgba(255,255,255,.06);
-      margin-top:auto;
-    }
-    .foot{
-      margin-top:16px;
+
+    .empty{
+      padding:18px;
       color:var(--muted);
-      font-size:12px;
-      display:flex;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap:10px;
+      text-align:center;
+    }
+
+    .foot{
+      margin-top:16px;color:var(--muted);font-size:12px;
+      display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
     }
     .note a{color:var(--accent);text-decoration:underline}
-    .center{
-      padding:22px;
-      text-align:center;
-      color:var(--muted);
-    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="top">
@@ -207,28 +194,16 @@
 
     <div class="card">
       <div class="controls">
-        <a class="btn" href="/rentals/index.html">← Back to Rentals</a>
-        <button id="btnRefresh" class="btn">Refresh</button>
+        <a class="btn" href="/rentals/">← Back to Rentals</a>
+        <button id="btnRefresh" class="btn" type="button">Refresh</button>
+
         <span class="pill" style="margin-left:auto;">
           <span>Slug:</span>
           <b id="slugText">—</b>
         </span>
       </div>
 
-      <div id="content" class="content">
-        <div class="panel">
-          <div class="hero" id="hero">
-            <div class="center">Loading…</div>
-          </div>
-          <div class="thumbs" id="thumbs" style="display:none;"></div>
-        </div>
-
-        <div class="panel">
-          <div class="details" id="details">
-            <div class="center">Loading…</div>
-          </div>
-        </div>
-      </div>
+      <div id="content" class="empty">Loading…</div>
     </div>
 
     <div class="foot">
@@ -241,179 +216,174 @@
     </div>
   </div>
 
-<script>
-  // Optional runtime override:
-  // <script>window.API_BASE="https://api.cfrihoa.com";</script>
-  const API_BASE =
-    (window.API_BASE && String(window.API_BASE)) ||
-    "https://api.cfrihoa.com";
+  <script>
+    (function(){
+      var API_BASE = (window.API_BASE && String(window.API_BASE)) || "https://api.cfrihoa.com";
+      function $(id){ return document.getElementById(id); }
 
-  const $ = (id) => document.getElementById(id);
+      function safeText(v){ return (v === null || v === undefined) ? "" : String(v); }
 
-  function safeText(v){ return (v === null || v === undefined) ? "" : String(v); }
-
-  function money(v){
-    if (v === null || v === undefined || v === "") return "";
-    const n = Number(v);
-    if (!Number.isFinite(n)) return String(v);
-    return n.toLocaleString(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 });
-  }
-
-  function getSlug(){
-    const params = new URLSearchParams(location.search);
-    return (params.get("slug") || "").trim();
-  }
-
-  function imgOrPlaceholder(url){
-    return url ? url : "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`
-      <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900">
-        <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#121c2b"/>
-            <stop offset="1" stop-color="#0b1220"/>
-          </linearGradient>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#g)"/>
-        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-              fill="#9fb0c3" font-family="system-ui,Segoe UI,Roboto" font-size="44">
-          No Photo
-        </text>
-      </svg>
-    `);
-  }
-
-  function normalizePhotos(listing){
-    // Prefer photo_url if present; fall back to primary_photo_url
-    const out = [];
-    if (Array.isArray(listing.photos)) {
-      for (const p of listing.photos) {
-        const u = p && (p.photo_url || p.url || p.href);
-        if (u) out.push(String(u));
-      }
-    }
-    if (!out.length && listing.primary_photo_url) out.push(String(listing.primary_photo_url));
-    if (!out.length) out.push(imgOrPlaceholder(""));
-    return out;
-  }
-
-  function render(listing){
-    const title = safeText(listing.title) || "(Untitled Listing)";
-    document.title = `CFRIHOA — ${title}`;
-
-    const cityState = [safeText(listing.city), safeText(listing.state)].filter(Boolean).join(", ");
-    const floor = safeText(listing.floor);
-    const unit = safeText(listing.unit_code) ? ("Unit " + safeText(listing.unit_code)) : "";
-    const meta = [cityState, floor, unit].filter(Boolean).join(" • ");
-
-    const beds = safeText(listing.beds);
-    const baths = safeText(listing.baths);
-    const laundry = safeText(listing.laundry);
-    const parking = safeText(listing.parking);
-
-    const photos = normalizePhotos(listing);
-    const main = imgOrPlaceholder(photos[0]);
-
-    // Left panel (hero + thumbs)
-    $("hero").innerHTML = `<img id="mainImg" src="${main}" alt="">`;
-
-    const thumbs = $("thumbs");
-    thumbs.innerHTML = "";
-    if (photos.length > 1) {
-      thumbs.style.display = "flex";
-      photos.forEach((src, i) => {
-        const d = document.createElement("div");
-        d.className = "thumb" + (i === 0 ? " active" : "");
-        d.innerHTML = `<img src="${imgOrPlaceholder(src)}" alt="">`;
-        d.addEventListener("click", () => {
-          $("mainImg").src = imgOrPlaceholder(src);
-          [...thumbs.children].forEach(x => x.classList.remove("active"));
-          d.classList.add("active");
-        });
-        thumbs.appendChild(d);
-      });
-    } else {
-      thumbs.style.display = "none";
-    }
-
-    // Right panel (details)
-    $("details").innerHTML = `
-      <div class="title">${title}</div>
-      <div class="meta">${meta}</div>
-
-      <div class="priceRow">
-        <b>${money(listing.price)}</b>
-        <span class="meta">/ month</span>
-      </div>
-
-      <div class="grid2">
-        <div class="kv">
-          <div class="k">Beds</div>
-          <div class="v">${beds || "—"}</div>
-        </div>
-        <div class="kv">
-          <div class="k">Baths</div>
-          <div class="v">${baths || "—"}</div>
-        </div>
-        <div class="kv">
-          <div class="k">Laundry</div>
-          <div class="v">${laundry || "—"}</div>
-        </div>
-        <div class="kv">
-          <div class="k">Parking</div>
-          <div class="v">${parking || "—"}</div>
-        </div>
-      </div>
-
-      <div class="desc">${safeText(listing.description) || ""}</div>
-
-      <div class="ctaRow">
-        <a class="btn btnPrimary" href="tel:+14012102121">Call: (401) 210-2121</a>
-        <a class="btn" href="/rentals/index.html">View all rentals</a>
-      </div>
-    `;
-  }
-
-  async function load(){
-    const slug = getSlug();
-    $("slugText").textContent = slug || "—";
-
-    if (!slug) {
-      $("statusText").textContent = "Error";
-      $("hero").innerHTML = `<div class="center">Missing <b>?slug=</b> in the URL.</div>`;
-      $("details").innerHTML = `<div class="center">Open from the rentals list, or add <b>?slug=your-slug</b>.</div>`;
-      return;
-    }
-
-    $("statusText").textContent = "Loading…";
-    try{
-      // API returns LIST at /api/listings — we find the matching slug client-side
-      const res = await fetch(API_BASE + "/api/listings", { method:"GET" });
-      if (!res.ok) throw new Error(res.status + " " + res.statusText);
-
-      const json = await res.json();
-      const list = (json && Array.isArray(json.data)) ? json.data : [];
-      const match = list.find(x => String(x.slug || "").trim() === slug);
-
-      if (!match) {
-        $("statusText").textContent = "Online";
-        $("hero").innerHTML = `<div class="center">Listing not found for slug:<br><b>${slug}</b></div>`;
-        $("details").innerHTML = `<div class="center">This listing may be unpublished or the slug changed.</div>`;
-        return;
+      function money(v){
+        if (v === null || v === undefined || v === "") return "";
+        var n = Number(v);
+        if (!Number.isFinite(n)) return String(v);
+        return n.toLocaleString(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 });
       }
 
-      $("statusText").textContent = "Online";
-      render(match);
+      function placeholderDataUrl(){
+        var svg =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">' +
+          '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">' +
+          '<stop offset="0" stop-color="#121c2b"/>' +
+          '<stop offset="1" stop-color="#0b1220"/>' +
+          '</linearGradient></defs>' +
+          '<rect width="100%" height="100%" fill="url(#g)"/>' +
+          '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"' +
+          ' fill="#9fb0c3" font-family="system-ui,Segoe UI,Roboto" font-size="40">' +
+          'No Photo</text></svg>';
+        return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+      }
 
-    } catch (err) {
-      console.error(err);
-      $("statusText").textContent = "Error";
-      $("hero").innerHTML = `<div class="center">Could not load listing photos.</div>`;
-      $("details").innerHTML = `<div class="center">Could not load listing. Check API + CORS.</div>`;
-    }
-  }
+      function getSlug(){
+        var params = new URLSearchParams(location.search);
+        return (params.get("slug") || "").trim();
+      }
 
-  $("btnRefresh").addEventListener("click", load);
-  load();
-</script>
+      function normalizePhotos(listing){
+        var out = [];
+
+        // photos[] may contain photo_url (preferred) or path
+        if (listing && Array.isArray(listing.photos)){
+          for (var i=0;i<listing.photos.length;i++){
+            var p = listing.photos[i] || {};
+            var u = p.photo_url || p.url || p.href || "";
+            if (!u && p.path){
+              u = API_BASE + "/img?path=" + encodeURIComponent(String(p.path));
+            }
+            if (u) out.push(String(u));
+          }
+        }
+
+        // primary fallback
+        if (out.length === 0 && listing && listing.primary_photo_url){
+          out.push(String(listing.primary_photo_url));
+        }
+
+        if (out.length === 0) out.push(placeholderDataUrl());
+        return out;
+      }
+
+      function render(listing){
+        var photos = normalizePhotos(listing);
+
+        var title = safeText(listing.title) || "(Untitled Listing)";
+        var cityState = [safeText(listing.city), safeText(listing.state)].filter(Boolean).join(", ");
+        var meta = [
+          cityState,
+          safeText(listing.floor),
+          safeText(listing.unit_code) ? ("Unit " + safeText(listing.unit_code)) : ""
+        ].filter(Boolean).join(" • ");
+
+        var beds = safeText(listing.beds);
+        var baths = safeText(listing.baths);
+        var laundry = safeText(listing.laundry);
+        var parking = safeText(listing.parking);
+        var desc = safeText(listing.description);
+
+        $("content").className = "";
+        $("content").innerHTML =
+          '<div class="layout">' +
+            '<div class="panel">' +
+              '<div class="gallery">' +
+                '<img id="mainImg" class="mainImg" src="' + photos[0] + '" alt="">' +
+                '<div id="thumbs" class="thumbs"></div>' +
+              '</div>' +
+            '</div>' +
+
+            '<div class="panel">' +
+              '<div class="details">' +
+                '<div class="title">' + title + '</div>' +
+                '<div class="meta">' + meta + '</div>' +
+                '<div class="price">' + money(listing.price) + ' <span class="meta">/ month</span></div>' +
+
+                '<div class="grid2">' +
+                  '<div class="kv"><div class="k">Beds</div><div class="v">' + (beds || "—") + '</div></div>' +
+                  '<div class="kv"><div class="k">Baths</div><div class="v">' + (baths || "—") + '</div></div>' +
+                  '<div class="kv"><div class="k">Laundry</div><div class="v">' + (laundry || "—") + '</div></div>' +
+                  '<div class="kv"><div class="k">Parking</div><div class="v">' + (parking || "—") + '</div></div>' +
+                '</div>' +
+
+                '<div class="desc">' + (desc || "") + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+
+        // thumbs
+        var thumbs = $("thumbs");
+        thumbs.innerHTML = "";
+        for (var i=0;i<photos.length;i++){
+          (function(idx){
+            var d = document.createElement("div");
+            d.className = "thumb" + (idx === 0 ? " active" : "");
+            d.innerHTML = '<img src="' + photos[idx] + '" alt="">';
+            d.addEventListener("click", function(){
+              $("mainImg").src = photos[idx];
+              var kids = thumbs.children;
+              for (var k=0;k<kids.length;k++) kids[k].classList.remove("active");
+              d.classList.add("active");
+            });
+            thumbs.appendChild(d);
+          })(i);
+        }
+      }
+
+      async function load(){
+        var slug = getSlug();
+        $("slugText").textContent = slug || "—";
+
+        if (!slug){
+          $("statusText").textContent = "Error";
+          $("content").className = "empty";
+          $("content").textContent = "Missing ?slug= in the URL.";
+          return;
+        }
+
+        $("statusText").textContent = "Loading…";
+        $("content").className = "empty";
+        $("content").textContent = "Loading…";
+
+        try{
+          // API returns list at /api/listings, so we find the listing client-side
+          var res = await fetch(API_BASE + "/api/listings", { method:"GET" });
+          if (!res.ok) throw new Error(res.status + " " + res.statusText);
+          var json = await res.json();
+          var list = (json && Array.isArray(json.data)) ? json.data : [];
+
+          var match = null;
+          for (var i=0;i<list.length;i++){
+            if (String(list[i].slug || "").trim() === slug) { match = list[i]; break; }
+          }
+
+          if (!match){
+            $("statusText").textContent = "Not found";
+            $("content").className = "empty";
+            $("content").textContent = "Listing not found for slug: " + slug;
+            return;
+          }
+
+          $("statusText").textContent = "Online";
+          render(match);
+        }catch(err){
+          console.error(err);
+          $("statusText").textContent = "Error";
+          $("content").className = "empty";
+          $("content").textContent = "Could not load listing. Check API and CORS.";
+        }
+      }
+
+      $("btnRefresh").addEventListener("click", load);
+      load();
+    })();
+  </script>
 </body>
 </html>
