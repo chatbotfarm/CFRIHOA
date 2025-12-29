@@ -71,6 +71,19 @@
     }
     .btn:hover{border-color:#2a4260}
 
+    /* NEW: primary CTA button */
+    .btnPrimary{
+      font:inherit;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(126,200,255,.45);
+      background:rgba(126,200,255,.14);
+      color:var(--text);
+      cursor:pointer;
+      font-weight:800;
+    }
+    .btnPrimary:hover{border-color:rgba(126,200,255,.75)}
+
     .layout{
       display:grid;
       grid-template-columns: 1.6fr 1fr;
@@ -196,6 +209,9 @@
       <div class="controls">
         <a class="btn" href="/rentals/">← Back to Rentals</a>
         <button id="btnRefresh" class="btn" type="button">Refresh</button>
+
+        <!-- NEW: Book Showing button (gets enabled once we have slug) -->
+        <a id="btnBook" class="btnPrimary" href="/rentals/book.html" style="display:none;">Book Unit Showing</a>
 
         <span class="pill" style="margin-left:auto;">
           <span>Slug:</span>
@@ -337,9 +353,27 @@
         }
       }
 
+      function wireBookButton(slug){
+        var btn = $("btnBook");
+        if (!btn) return;
+
+        if (!slug){
+          btn.style.display = "none";
+          btn.removeAttribute("href");
+          return;
+        }
+
+        // Listing page button → /rentals/book.html?slug=...
+        btn.href = "/rentals/book.html?slug=" + encodeURIComponent(slug);
+        btn.style.display = "";
+      }
+
       async function load(){
         var slug = getSlug();
         $("slugText").textContent = slug || "—";
+
+        // set book button immediately (even before data loads)
+        wireBookButton(slug);
 
         if (!slug){
           $("statusText").textContent = "Error";
