@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>CFRIHOA — Book a Showing</title>
-  <meta name="description" content="Request a showing and then book a time for a CFRIHOA rental unit." />
+  <meta name="description" content="Book a showing for a CFRIHOA rental unit." />
 
   <style>
     :root{
@@ -73,17 +73,6 @@
       gap:8px;
     }
     .btn:hover{border-color:#2a4260}
-    .btnPrimary{
-      font:inherit;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(126,200,255,.45);
-      background:rgba(126,200,255,.14);
-      color:var(--text);
-      cursor:pointer;
-      font-weight:900;
-    }
-    .btnPrimary:hover{border-color:rgba(126,200,255,.75)}
 
     .hero{
       padding:18px 16px 14px;
@@ -103,72 +92,67 @@
     }
     .heroMeta b{color:var(--text)}
 
-    .steps{
-      padding:14px;
-      display:grid;
-      gap:14px;
-    }
-
-    .stepCard{
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(11,15,20,.20);
-      border-radius:16px;
-      overflow:hidden;
-    }
-    .stepHead{
-      padding:12px 14px;
+    .helperRow{
+      margin-top:10px;
       display:flex;
-      align-items:center;
-      justify-content:space-between;
       gap:10px;
-      border-bottom:1px solid rgba(255,255,255,.06);
+      align-items:center;
       flex-wrap:wrap;
-    }
-    .stepTitle{
-      margin:0;
-      font-weight:900;
-      letter-spacing:.2px;
-    }
-    .stepHint{
       color:var(--muted);
+      font-size:13px;
+    }
+    .codePill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(11,15,20,.25);
+      padding:8px 10px;
+      border-radius:999px;
+      max-width:100%;
+    }
+    .codePill code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      color:var(--text);
       font-size:12px;
-      margin-top:2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 560px;
+      display:inline-block;
     }
-    .stepBody{
-      padding:14px;
+    .miniBtn{
+      font:inherit;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:#0c1320;
+      color:var(--text);
+      cursor:pointer;
     }
+    .miniBtn:hover{border-color:#2a4260}
 
+    .frameWrap{ padding:14px; }
     .frameCard{
       background:#fff;
-      border-radius:14px;
+      border-radius:16px;
       overflow:hidden;
-      border:1px solid rgba(0,0,0,.08);
-      min-height: 690px;
+      border:1px solid rgba(255,255,255,.12);
+      min-height:760px;
     }
     iframe{
       width:100%;
       border:none;
+      overflow:hidden;
       display:block;
-      height: 690px;
-    }
-    .calendarFrame{
-      min-height: 720px;
-    }
-    .calendarFrame iframe{
-      height: 720px;
+      min-height:760px;
     }
 
-    .notice{
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(126,200,255,.35);
-      background:rgba(126,200,255,.10);
-      color:var(--text);
-      margin: 10px 0 0;
+    .empty{
+      padding:18px;
+      color:var(--muted);
+      text-align:center;
     }
-    .notice b{color:var(--text)}
-
-    .hide{display:none !important;}
 
     .foot{
       margin-top:16px;color:var(--muted);font-size:12px;
@@ -185,7 +169,7 @@
         <div class="logo">🏠</div>
         <div>
           <h1>CFRIHOA</h1>
-          <div class="sub">Request a showing, then pick a time</div>
+          <div class="sub">Book a showing</div>
         </div>
       </div>
 
@@ -208,73 +192,30 @@
       <div class="hero">
         <h2 class="heroTitle">Book a Showing</h2>
         <p class="heroMeta">Unit of interest: <b id="unitText">—</b></p>
-        <div class="notice" id="unitNotice" style="display:none;">
-          We’ll attach <b id="unitText2">—</b> to your request automatically.
+
+        <div class="helperRow" id="helperRow" style="display:none;">
+          <span>If the widget doesn’t auto-fill, copy/paste this into “Unit of Interest”:</span>
+          <span class="codePill">
+            <code id="unitCode">—</code>
+            <button class="miniBtn" id="btnCopy" type="button">Copy</button>
+          </span>
         </div>
       </div>
 
-      <div class="steps">
-
-        <!-- STEP 1: FORM -->
-        <div class="stepCard" id="step1">
-          <div class="stepHead">
-            <div>
-              <p class="stepTitle">Step 1 — Contact Info</p>
-              <div class="stepHint">Submit this first so the office knows which unit you’re requesting.</div>
-            </div>
-            <span class="pill"><span>Required</span></span>
-            <button class="btnPrimary" id="btnContinue" type="button" title="If you already submitted Step 1, continue to Step 2">
-              Continue to Step 2 →
-            </button>
-          </div>
-
-          <div class="stepBody">
-            <div class="frameCard">
-              <!-- IMPORTANT: use GHL embed attributes so form_embed.js can initialize it properly -->
-              <iframe
-                id="formFrame"
-                src="about:blank"
-                style="width:100%;height:100%;border:none;border-radius:3px"
-                data-layout="{'id':'INLINE'}"
-                data-trigger-type="alwaysShow"
-                data-trigger-value=""
-                data-activation-type="alwaysActivated"
-                data-activation-value=""
-                data-deactivation-type="neverDeactivate"
-                data-deactivation-value=""
-                data-form-name="Apartment Viewing Request - embedded"
-                data-height="690"
-                data-layout-iframe-id="inline-aSIUr41dSaq5xZbIffNI"
-                data-form-id="aSIUr41dSaq5xZbIffNI"
-                title="Apartment Viewing Request - embedded">
-              </iframe>
-            </div>
-          </div>
+      <div id="content" class="frameWrap">
+        <div class="frameCard">
+          <!-- Your calendar embed iframe (we set src via JS so we can append the unit slug) -->
+          <iframe
+            id="bookingFrame"
+            style="width:100%;border:none;overflow:hidden;"
+            scrolling="no"
+            title="Apartment viewing booking"
+            src="about:blank">
+          </iframe>
         </div>
-
-        <!-- STEP 2: CALENDAR -->
-        <div class="stepCard hide" id="step2">
-          <div class="stepHead">
-            <div>
-              <p class="stepTitle">Step 2 — Pick a Date & Time</p>
-              <div class="stepHint">After you submit Step 1, choose an available slot.</div>
-            </div>
-            <button class="btn" id="btnBackToStep1" type="button">← Back</button>
-          </div>
-
-          <div class="stepBody">
-            <div class="frameCard calendarFrame">
-              <iframe
-                id="calendarFrame"
-                title="Apartment viewing booking"
-                scrolling="no"
-                src="about:blank">
-              </iframe>
-            </div>
-          </div>
-        </div>
-
       </div>
+
+      <div id="empty" class="empty" style="display:none;"></div>
     </div>
 
     <div class="foot">
@@ -282,22 +223,20 @@
         Admin: <a href="https://admin.cfrihoa.com" target="_blank" rel="noopener">admin.cfrihoa.com</a>
       </div>
       <div class="note">
-        Widgets: <a href="https://api.leadconnectorhq.com" target="_blank" rel="noopener">LeadConnector</a>
+        Calendar: <a href="https://api.leadconnectorhq.com/widget/booking/IunSOqtZMJBhiiNYqNfu" target="_blank" rel="noopener">LeadConnector Booking</a>
       </div>
     </div>
   </div>
 
-  <!-- GHL embed helper -->
-  <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+  <!-- GHL provided embed helper (keep this) -->
+  <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
 
   <script>
     (function(){
       function $(id){ return document.getElementById(id); }
       function setStatus(t){ $("statusText").textContent = t; }
 
-      var FORM_ID = "aSIUr41dSaq5xZbIffNI";
-      var FORM_BASE = "https://api.leadconnectorhq.com/widget/form/" + FORM_ID;
-
+      // Your booking widget base URL
       var BOOKING_BASE = "https://api.leadconnectorhq.com/widget/booking/IunSOqtZMJBhiiNYqNfu";
 
       function getSlug(){
@@ -305,66 +244,24 @@
         return (params.get("slug") || "").trim();
       }
 
-      function buildFormUrl(slug){
-        // IMPORTANT: make sure the Query Key matches EXACTLY what you set in GHL:
-        // unit_of_interest
-        var u = new URL(FORM_BASE);
-        u.searchParams.set("unit_of_interest", slug);
-        // extra harmless context/tracking
-        u.searchParams.set("listing_slug", slug);
-        u.searchParams.set("source", "cfrihoa_rentals");
-        return u.toString();
+      function showError(msg){
+        setStatus("Error");
+        $("empty").style.display = "";
+        $("empty").textContent = msg;
       }
 
       function buildBookingUrl(slug){
-        // Tracking only. The real unit capture happens in Step 1 form.
         var u = new URL(BOOKING_BASE);
-        u.searchParams.set("listing_slug", slug);
-        u.searchParams.set("slug", slug);
+
+        // ✅ This must match your field Query Key in GHL:
+        // unit_of_interest
+        u.searchParams.set("unit_of_interest", slug);
+
+        // Optional tracking (harmless)
         u.searchParams.set("source", "cfrihoa_rentals");
+        u.searchParams.set("listing_slug", slug);
+
         return u.toString();
-      }
-
-      function showStep2(){
-        $("step2").classList.remove("hide");
-        $("step1").classList.add("hide");
-        $("step2").scrollIntoView({ behavior:"smooth", block:"start" });
-      }
-
-      function showStep1(){
-        $("step1").classList.remove("hide");
-        $("step2").classList.add("hide");
-        $("step1").scrollIntoView({ behavior:"smooth", block:"start" });
-      }
-
-      // Stronger listener: move to Step 2 when we detect a likely "submission" message
-      function attachSubmissionListener(){
-        window.addEventListener("message", function(ev){
-          try{
-            var origin = String(ev.origin || "");
-            var okOrigin =
-              origin.includes("leadconnectorhq.com") ||
-              origin.includes("msgsndr.com");
-
-            if (!okOrigin) return;
-
-            var data = ev.data;
-            var s = "";
-            if (typeof data === "string") s = data;
-            else s = JSON.stringify(data || {});
-            s = s.toLowerCase();
-
-            // More permissive set of matches (these embeds vary)
-            var hit =
-              s.includes("submitted") ||
-              s.includes("submission") ||
-              s.includes("form_submit") ||
-              (s.includes("form") && s.includes("success")) ||
-              (s.includes("success") && s.includes("aSIUr41dSaq5xZbIffNI".toLowerCase()));
-
-            if (hit) showStep2();
-          }catch(e){}
-        });
       }
 
       function load(){
@@ -372,34 +269,38 @@
 
         $("slugText").textContent = slug || "—";
         $("unitText").textContent = slug || "—";
-        $("unitText2").textContent = slug || "—";
-        $("unitNotice").style.display = slug ? "" : "none";
+        $("unitCode").textContent = slug || "—";
+        $("helperRow").style.display = slug ? "" : "none";
 
         if (!slug){
-          setStatus("Error");
-          $("unitNotice").style.display = "none";
-          $("unitText").textContent = "—";
+          showError("Missing ?slug= in the URL. Please go back and select a unit.");
           return;
         }
 
+        var frame = $("bookingFrame");
         setStatus("Loading…");
+        frame.src = buildBookingUrl(slug);
 
-        // Step 1 form (prefill via query string)
-        $("formFrame").src = buildFormUrl(slug);
-
-        // Step 2 calendar
-        $("calendarFrame").src = buildBookingUrl(slug);
-
-        $("formFrame").addEventListener("load", function(){
+        frame.addEventListener("load", function(){
           setStatus("Online");
-        }, { once:true });
+        });
 
-        $("btnBackToStep1").addEventListener("click", showStep1);
-
-        // Manual continue button (important fallback)
-        $("btnContinue").addEventListener("click", showStep2);
-
-        attachSubmissionListener();
+        $("btnCopy").addEventListener("click", async function(){
+          try{
+            await navigator.clipboard.writeText(slug);
+            $("btnCopy").textContent = "Copied";
+            setTimeout(function(){ $("btnCopy").textContent = "Copy"; }, 1200);
+          }catch(e){
+            // fallback: select the text
+            var r = document.createRange();
+            r.selectNodeContents($("unitCode"));
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(r);
+            $("btnCopy").textContent = "Select & Copy";
+            setTimeout(function(){ $("btnCopy").textContent = "Copy"; }, 1200);
+          }
+        });
       }
 
       load();
