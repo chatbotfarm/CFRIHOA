@@ -73,6 +73,17 @@
       gap:8px;
     }
     .btn:hover{border-color:#2a4260}
+    .btnPrimary{
+      font:inherit;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(126,200,255,.45);
+      background:rgba(126,200,255,.14);
+      color:var(--text);
+      cursor:pointer;
+      font-weight:900;
+    }
+    .btnPrimary:hover{border-color:rgba(126,200,255,.75)}
 
     .hero{
       padding:18px 16px 14px;
@@ -111,6 +122,7 @@
       justify-content:space-between;
       gap:10px;
       border-bottom:1px solid rgba(255,255,255,.06);
+      flex-wrap:wrap;
     }
     .stepTitle{
       margin:0;
@@ -120,6 +132,7 @@
     .stepHint{
       color:var(--muted);
       font-size:12px;
+      margin-top:2px;
     }
     .stepBody{
       padding:14px;
@@ -210,15 +223,30 @@
               <div class="stepHint">Submit this first so the office knows which unit you’re requesting.</div>
             </div>
             <span class="pill"><span>Required</span></span>
+            <button class="btnPrimary" id="btnContinue" type="button" title="If you already submitted Step 1, continue to Step 2">
+              Continue to Step 2 →
+            </button>
           </div>
 
           <div class="stepBody">
             <div class="frameCard">
+              <!-- IMPORTANT: use GHL embed attributes so form_embed.js can initialize it properly -->
               <iframe
                 id="formFrame"
-                title="Apartment Viewing Request - embedded"
                 src="about:blank"
-                data-form-id="aSIUr41dSaq5xZbIffNI">
+                style="width:100%;height:100%;border:none;border-radius:3px"
+                data-layout="{'id':'INLINE'}"
+                data-trigger-type="alwaysShow"
+                data-trigger-value=""
+                data-activation-type="alwaysActivated"
+                data-activation-value=""
+                data-deactivation-type="neverDeactivate"
+                data-deactivation-value=""
+                data-form-name="Apartment Viewing Request - embedded"
+                data-height="690"
+                data-layout-iframe-id="inline-aSIUr41dSaq5xZbIffNI"
+                data-form-id="aSIUr41dSaq5xZbIffNI"
+                title="Apartment Viewing Request - embedded">
               </iframe>
             </div>
           </div>
@@ -231,7 +259,7 @@
               <p class="stepTitle">Step 2 — Pick a Date & Time</p>
               <div class="stepHint">After you submit Step 1, choose an available slot.</div>
             </div>
-            <button class="btn" id="btnBackToStep1" type="button">← Edit Contact Info</button>
+            <button class="btn" id="btnBackToStep1" type="button">← Back</button>
           </div>
 
           <div class="stepBody">
@@ -267,7 +295,6 @@
       function $(id){ return document.getElementById(id); }
       function setStatus(t){ $("statusText").textContent = t; }
 
-      // Your widget URLs / IDs
       var FORM_ID = "aSIUr41dSaq5xZbIffNI";
       var FORM_BASE = "https://api.leadconnectorhq.com/widget/form/" + FORM_ID;
 
@@ -279,33 +306,28 @@
       }
 
       function buildFormUrl(slug){
-        // This is the IMPORTANT part: prefill the form (not the booking widget).
-        // Your form field Query Key is: unit_of_interest
+        // IMPORTANT: make sure the Query Key matches EXACTLY what you set in GHL:
+        // unit_of_interest
         var u = new URL(FORM_BASE);
         u.searchParams.set("unit_of_interest", slug);
-
-        // (optional tracking)
-        u.searchParams.set("source", "cfrihoa_rentals");
+        // extra harmless context/tracking
         u.searchParams.set("listing_slug", slug);
-
+        u.searchParams.set("source", "cfrihoa_rentals");
         return u.toString();
       }
 
       function buildBookingUrl(slug){
-        // We are NOT relying on prefill here anymore.
-        // The contact already got unit_of_interest from Step 1.
-        // Still pass slug for tracking only.
+        // Tracking only. The real unit capture happens in Step 1 form.
         var u = new URL(BOOKING_BASE);
-        u.searchParams.set("source", "cfrihoa_rentals");
         u.searchParams.set("listing_slug", slug);
         u.searchParams.set("slug", slug);
+        u.searchParams.set("source", "cfrihoa_rentals");
         return u.toString();
       }
 
       function showStep2(){
         $("step2").classList.remove("hide");
         $("step1").classList.add("hide");
-        // scroll into view nicely
         $("step2").scrollIntoView({ behavior:"smooth", block:"start" });
       }
 
@@ -315,17 +337,14 @@
         $("step1").scrollIntoView({ behavior:"smooth", block:"start" });
       }
 
+      // Stronger listener: move to Step 2 when we detect a likely "submission" message
       function attachSubmissionListener(){
-        // LeadConnector embeds often postMessage when submitted.
-        // We listen for ANY message from leadconnector/msgsndr, then
-        // heuristically treat it as a successful submit if it contains
-        // common keywords. (Safe: worst case, user still sees Step 2 early.)
         window.addEventListener("message", function(ev){
           try{
             var origin = String(ev.origin || "");
             var okOrigin =
-              origin.indexOf("leadconnectorhq.com") !== -1 ||
-              origin.indexOf("msgsndr.com") !== -1;
+              origin.includes("leadconnectorhq.com") ||
+              origin.includes("msgsndr.com");
 
             if (!okOrigin) return;
 
@@ -333,26 +352,24 @@
             var s = "";
             if (typeof data === "string") s = data;
             else s = JSON.stringify(data || {});
-
             s = s.toLowerCase();
 
-            // Common-ish signals
-            var looksLikeSubmit =
-              s.indexOf("form") !== -1 && (s.indexOf("submit") !== -1 || s.indexOf("submitted") !== -1 || s.indexOf("success") !== -1);
+            // More permissive set of matches (these embeds vary)
+            var hit =
+              s.includes("submitted") ||
+              s.includes("submission") ||
+              s.includes("form_submit") ||
+              (s.includes("form") && s.includes("success")) ||
+              (s.includes("success") && s.includes("aSIUr41dSaq5xZbIffNI".toLowerCase()));
 
-            // Some embeds just send a generic event name
-            var looksLikeEvent =
-              s.indexOf("ghl") !== -1 && (s.indexOf("success") !== -1 || s.indexOf("submitted") !== -1);
-
-            if (looksLikeSubmit || looksLikeEvent){
-              showStep2();
-            }
+            if (hit) showStep2();
           }catch(e){}
         });
       }
 
       function load(){
         var slug = getSlug();
+
         $("slugText").textContent = slug || "—";
         $("unitText").textContent = slug || "—";
         $("unitText2").textContent = slug || "—";
@@ -362,24 +379,25 @@
           setStatus("Error");
           $("unitNotice").style.display = "none";
           $("unitText").textContent = "—";
-          $("step1").querySelector(".stepHint").textContent = "Missing ?slug= in the URL. Please go back and select a unit.";
           return;
         }
 
         setStatus("Loading…");
 
-        // Step 1: Prefill FORM
+        // Step 1 form (prefill via query string)
         $("formFrame").src = buildFormUrl(slug);
 
-        // Step 2: Booking calendar
+        // Step 2 calendar
         $("calendarFrame").src = buildBookingUrl(slug);
 
-        // Status flips when first iframe loads
         $("formFrame").addEventListener("load", function(){
           setStatus("Online");
         }, { once:true });
 
         $("btnBackToStep1").addEventListener("click", showStep1);
+
+        // Manual continue button (important fallback)
+        $("btnContinue").addEventListener("click", showStep2);
 
         attachSubmissionListener();
       }
