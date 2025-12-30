@@ -91,10 +91,47 @@
       font-size:18px;
     }
     .heroMeta b{color:var(--text)}
-
-    .frameWrap{
-      padding:14px;
+    .helperRow{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:13px;
     }
+    .codePill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(11,15,20,.25);
+      padding:8px 10px;
+      border-radius:999px;
+      max-width:100%;
+    }
+    .codePill code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      color:var(--text);
+      font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 520px;
+      display:inline-block;
+    }
+    .miniBtn{
+      font:inherit;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:#0c1320;
+      color:var(--text);
+      cursor:pointer;
+    }
+    .miniBtn:hover{border-color:#2a4260}
+
+    .frameWrap{ padding:14px; }
     .frameCard{
       background:#fff;
       border-radius:16px;
@@ -106,7 +143,7 @@
       width:100%;
       border:none;
       overflow:hidden;
-      display:block;
+      displayीnly: block;
       min-height:720px;
     }
 
@@ -154,11 +191,18 @@
       <div class="hero">
         <h2 class="heroTitle">Book a Showing</h2>
         <p class="heroMeta">Unit of interest: <b id="unitText">—</b></p>
+
+        <div class="helperRow" id="helperRow" style="display:none;">
+          <span>If the field doesn’t auto-fill inside the widget, copy/paste this into “Unit of Interest”:</span>
+          <span class="codePill">
+            <code id="unitCode">—</code>
+            <button class="miniBtn" id="btnCopy" type="button">Copy</button>
+          </span>
+        </div>
       </div>
 
       <div id="content" class="frameWrap">
         <div class="frameCard">
-          <!-- IMPORTANT: we set src via JS so we can inject the unit query param -->
           <iframe
             id="ghlFrame"
             title="Apartment viewing booking"
@@ -181,14 +225,14 @@
     </div>
   </div>
 
-  <!-- GHL provided embed helper -->
+  <!-- GHL provided embed helper (keep this) -->
   <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
 
   <script>
     (function(){
       function $(id){ return document.getElementById(id); }
 
-      // Your booking widget base URL (from your embed code)
+      // Use exactly your GHL booking widget URL (no params here)
       var BOOKING_BASE = "https://api.leadconnectorhq.com/widget/booking/IunSOqtZMJBhiiNYqNfu";
 
       function getSlug(){
@@ -198,28 +242,35 @@
 
       function setStatus(t){ $("statusText").textContent = t; }
 
-      function buildBookingUrl(unit){
-        // Put the unit into the iframe URL query string.
-        // Primary key (matches your GHL form Query Key):
-        //   unit_of_interest
-        //
-        // We also include a few aliases as a safety net.
-        var u = new URL(BOOKING_BASE);
-        u.searchParams.set("unit_of_interest", unit);
-        u.searchParams.set("unit", unit);
-        u.searchParams.set("listing_slug", unit);
-        u.searchParams.set("slug", unit);
-
-        // Helpful: pass a source
-        u.searchParams.set("source", "cfrihoa_rentals");
-
-        return u.toString();
-      }
-
       function showError(msg){
         setStatus("Error");
         $("empty").style.display = "";
         $("empty").textContent = msg;
+      }
+
+      // Try multiple param formats that different LC/GHL embeds sometimes accept
+      function buildBookingUrl(unit){
+        var u = new URL(BOOKING_BASE);
+
+        // Your form field "Query Key" (from your screenshot)
+        u.searchParams.set("unit_of_interest", unit);
+
+        // Common alternate patterns (harmless if ignored)
+        u.searchParams.set("unitOfInterest", unit);
+        u.searchParams.set("unit", unit);
+        u.searchParams.set("slug", unit);
+        u.searchParams.set("listing_slug", unit);
+
+        // These bracket formats sometimes work for custom fields in embeds
+        u.searchParams.set("contact[unit_of_interest]", unit);
+        u.searchParams.set("contact[custom_fields][unit_of_interest]", unit);
+        u.searchParams.set("custom_fields[unit_of_interest]", unit);
+        u.searchParams.set("customField[unit_of_interest]", unit);
+
+        // Optional tracking
+        u.searchParams.set("source", "cfrihoa_rentals");
+
+        return u.toString();
       }
 
       function load(){
@@ -227,26 +278,42 @@
 
         $("slugText").textContent = slug || "—";
         $("unitText").textContent = slug || "—";
+        $("unitCode").textContent = slug || "—";
+        $("helperRow").style.display = slug ? "" : "none";
 
         if (!slug){
           showError("Missing ?slug= in the URL. Please go back and select a unit.");
           return;
         }
 
-        // Set iframe src with query params (this is the only reliable “prefill” mechanism available)
         var iframe = $("ghlFrame");
         var bookingUrl = buildBookingUrl(slug);
 
-        // Set visible status
         setStatus("Loading…");
-
-        // Load
         iframe.src = bookingUrl;
 
-        // When iframe loads, mark online
         iframe.addEventListener("load", function(){
+          // The widget may still be rendering internally, but we at least know the frame is reachable.
           setStatus("Online");
         }, { once:false });
+
+        $("btnCopy").addEventListener("click", async function(){
+          try{
+            await navigator.clipboard.writeText(slug);
+            $("btnCopy").textContent = "Copied";
+            setTimeout(function(){ $("btnCopy").textContent = "Copy"; }, 1200);
+          }catch(e){
+            // fallback
+            var r = document.createRange();
+            var node = $("unitCode");
+            r.selectNodeContents(node);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(r);
+            $("btnCopy").textContent = "Select & Copy";
+            setTimeout(function(){ $("btnCopy").textContent = "Copy"; }, 1200);
+          }
+        });
       }
 
       load();
