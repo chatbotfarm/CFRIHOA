@@ -71,7 +71,6 @@
     }
     .btn:hover{border-color:#2a4260}
 
-    /* NEW: primary CTA button */
     .btnPrimary{
       font:inherit;
       padding:10px 12px;
@@ -179,12 +178,6 @@
       color:var(--muted);
       text-align:center;
     }
-
-    .foot{
-      margin-top:16px;color:var(--muted);font-size:12px;
-      display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
-    }
-    .note a{color:var(--accent);text-decoration:underline}
   </style>
 </head>
 
@@ -210,25 +203,11 @@
         <a class="btn" href="/rentals/">← Back to Rentals</a>
         <button id="btnRefresh" class="btn" type="button">Refresh</button>
 
-        <!-- NEW: Book Showing button (gets enabled once we have slug) -->
+        <!-- Book Showing button (enabled once slug exists, but not shown as text) -->
         <a id="btnBook" class="btnPrimary" href="/rentals/book.html" style="display:none;">Book Unit Showing</a>
-
-        <span class="pill" style="margin-left:auto;">
-          <span>Slug:</span>
-          <b id="slugText">—</b>
-        </span>
       </div>
 
       <div id="content" class="empty">Loading…</div>
-    </div>
-
-    <div class="foot">
-      <div class="note">
-        Admin: <a href="https://admin.cfrihoa.com" target="_blank" rel="noopener">admin.cfrihoa.com</a>
-      </div>
-      <div class="note">
-        API: <a href="https://api.cfrihoa.com/api/listings" target="_blank" rel="noopener">/api/listings</a>
-      </div>
     </div>
   </div>
 
@@ -267,8 +246,6 @@
 
       function normalizePhotos(listing){
         var out = [];
-
-        // photos[] may contain photo_url (preferred) or path
         if (listing && Array.isArray(listing.photos)){
           for (var i=0;i<listing.photos.length;i++){
             var p = listing.photos[i] || {};
@@ -279,14 +256,23 @@
             if (u) out.push(String(u));
           }
         }
-
-        // primary fallback
         if (out.length === 0 && listing && listing.primary_photo_url){
           out.push(String(listing.primary_photo_url));
         }
-
         if (out.length === 0) out.push(placeholderDataUrl());
         return out;
+      }
+
+      function wireBookButton(slug){
+        var btn = $("btnBook");
+        if (!btn) return;
+        if (!slug){
+          btn.style.display = "none";
+          btn.removeAttribute("href");
+          return;
+        }
+        btn.href = "/rentals/book.html?slug=" + encodeURIComponent(slug);
+        btn.style.display = "";
       }
 
       function render(listing){
@@ -315,26 +301,22 @@
                 '<div id="thumbs" class="thumbs"></div>' +
               '</div>' +
             '</div>' +
-
             '<div class="panel">' +
               '<div class="details">' +
                 '<div class="title">' + title + '</div>' +
                 '<div class="meta">' + meta + '</div>' +
                 '<div class="price">' + money(listing.price) + ' <span class="meta">/ month</span></div>' +
-
                 '<div class="grid2">' +
                   '<div class="kv"><div class="k">Beds</div><div class="v">' + (beds || "—") + '</div></div>' +
                   '<div class="kv"><div class="k">Baths</div><div class="v">' + (baths || "—") + '</div></div>' +
                   '<div class="kv"><div class="k">Laundry</div><div class="v">' + (laundry || "—") + '</div></div>' +
                   '<div class="kv"><div class="k">Parking</div><div class="v">' + (parking || "—") + '</div></div>' +
                 '</div>' +
-
                 '<div class="desc">' + (desc || "") + '</div>' +
               '</div>' +
             '</div>' +
           '</div>';
 
-        // thumbs
         var thumbs = $("thumbs");
         thumbs.innerHTML = "";
         for (var i=0;i<photos.length;i++){
@@ -353,32 +335,14 @@
         }
       }
 
-      function wireBookButton(slug){
-        var btn = $("btnBook");
-        if (!btn) return;
-
-        if (!slug){
-          btn.style.display = "none";
-          btn.removeAttribute("href");
-          return;
-        }
-
-        // Listing page button → /rentals/book.html?slug=...
-        btn.href = "/rentals/book.html?slug=" + encodeURIComponent(slug);
-        btn.style.display = "";
-      }
-
       async function load(){
         var slug = getSlug();
-        $("slugText").textContent = slug || "—";
-
-        // set book button immediately (even before data loads)
         wireBookButton(slug);
 
         if (!slug){
           $("statusText").textContent = "Error";
           $("content").className = "empty";
-          $("content").textContent = "Missing ?slug= in the URL.";
+          $("content").textContent = "Listing link is missing required information. Please return to Rentals and select a unit.";
           return;
         }
 
@@ -387,7 +351,6 @@
         $("content").textContent = "Loading…";
 
         try{
-          // API returns list at /api/listings, so we find the listing client-side
           var res = await fetch(API_BASE + "/api/listings", { method:"GET" });
           if (!res.ok) throw new Error(res.status + " " + res.statusText);
           var json = await res.json();
@@ -401,7 +364,7 @@
           if (!match){
             $("statusText").textContent = "Not found";
             $("content").className = "empty";
-            $("content").textContent = "Listing not found for slug: " + slug;
+            $("content").textContent = "This listing is no longer available.";
             return;
           }
 
@@ -411,7 +374,7 @@
           console.error(err);
           $("statusText").textContent = "Error";
           $("content").className = "empty";
-          $("content").textContent = "Could not load listing. Check API and CORS.";
+          $("content").textContent = "Could not load listing. Please try again later.";
         }
       }
 

@@ -127,11 +127,6 @@
     .price b{font-size:16px}
     .cta{color:var(--accent);font-weight:700;}
     .empty{padding:18px;color:var(--muted);text-align:center;}
-    .foot{
-      margin-top:16px;color:var(--muted);font-size:12px;
-      display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
-    }
-    .note a{color:var(--accent);text-decoration:underline}
   </style>
 </head>
 
@@ -172,30 +167,15 @@
       <div id="grid" class="grid"></div>
       <div id="empty" class="empty" style="display:none;">No available listings found.</div>
     </div>
-
-    <div class="foot">
-      <div class="note">
-        Admin: <a href="https://admin.cfrihoa.com" target="_blank" rel="noopener">admin.cfrihoa.com</a>
-      </div>
-      <div class="note">
-        API: <a href="https://api.cfrihoa.com/api/listings" target="_blank" rel="noopener">/api/listings</a>
-      </div>
-    </div>
   </div>
 
   <script>
     (function () {
-      // If you set a Cloudflare Pages env var named API_BASE, it will NOT automatically appear in window.
-      // So we default to the known URL. If you later inject window.API_BASE manually, it will override.
       var API_BASE = (window.API_BASE && String(window.API_BASE)) || "https://api.cfrihoa.com";
-
       function $(id){ return document.getElementById(id); }
-
       var all = [];
 
-      function safeText(v){
-        return (v === null || v === undefined) ? "" : String(v);
-      }
+      function safeText(v){ return (v === null || v === undefined) ? "" : String(v); }
 
       function money(v){
         if (v === null || v === undefined || v === "") return "";
@@ -218,9 +198,7 @@
         return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
       }
 
-      function imgOrPlaceholder(url){
-        return url ? url : placeholderDataUrl();
-      }
+      function imgOrPlaceholder(url){ return url ? url : placeholderDataUrl(); }
 
       function sortListings(list, mode){
         var arr = list.slice();
@@ -265,7 +243,7 @@
         for (var i=0;i<filtered.length;i++){
           var l = filtered[i];
 
-          // ✅ UPDATED LINK (pretty URL that maps to listing.html in Cloudflare Pages)
+          // Pretty URL with internal slug param (not shown in UI)
           var href = "/rentals/listing?slug=" + encodeURIComponent(l.slug);
 
           var beds = (l.beds !== null && l.beds !== undefined && l.beds !== "") ? (l.beds + " bd") : "";
@@ -321,7 +299,7 @@
           $("statusText").textContent = "Error";
           $("grid").innerHTML = "";
           $("empty").style.display = "";
-          $("empty").textContent = "Could not load listings. Check API and CORS.";
+          $("empty").textContent = "Could not load listings. Please try again later.";
         }
       }
 

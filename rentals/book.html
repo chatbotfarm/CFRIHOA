@@ -90,47 +90,6 @@
       color:var(--muted);
       font-size:18px;
     }
-    .heroMeta b{color:var(--text)}
-
-    .helperRow{
-      margin-top:10px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      color:var(--muted);
-      font-size:13px;
-    }
-    .codePill{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(11,15,20,.25);
-      padding:8px 10px;
-      border-radius:999px;
-      max-width:100%;
-    }
-    .codePill code{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      color:var(--text);
-      font-size:12px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: 560px;
-      display:inline-block;
-    }
-    .miniBtn{
-      font:inherit;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:#0c1320;
-      color:var(--text);
-      cursor:pointer;
-    }
-    .miniBtn:hover{border-color:#2a4260}
 
     .frameWrap{ padding:14px; }
     .frameCard{
@@ -153,12 +112,6 @@
       color:var(--muted);
       text-align:center;
     }
-
-    .foot{
-      margin-top:16px;color:var(--muted);font-size:12px;
-      display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
-    }
-    .note a{color:var(--accent);text-decoration:underline}
   </style>
 </head>
 
@@ -182,32 +135,17 @@
     <div class="card">
       <div class="controls">
         <a class="btn" href="/rentals/">← Back to Rentals</a>
-
-        <span class="pill" style="margin-left:auto;">
-          <span>Slug:</span>
-          <b id="slugText">—</b>
-        </span>
       </div>
 
       <div class="hero">
         <h2 class="heroTitle">Book a Showing</h2>
-        <p class="heroMeta">Unit of interest: <b id="unitText">—</b></p>
-
-        <div class="helperRow" id="helperRow" style="display:none;">
-          <span>If the widget doesn’t auto-fill, copy/paste this into “Unit of Interest”:</span>
-          <span class="codePill">
-            <code id="unitCode">—</code>
-            <button class="miniBtn" id="btnCopy" type="button">Copy</button>
-          </span>
-        </div>
+        <p class="heroMeta">Select a date and time below. Our team will confirm your appointment.</p>
       </div>
 
       <div id="content" class="frameWrap">
         <div class="frameCard">
-          <!-- Your calendar embed iframe (we set src via JS so we can append the unit slug) -->
           <iframe
             id="bookingFrame"
-            style="width:100%;border:none;overflow:hidden;"
             scrolling="no"
             title="Apartment viewing booking"
             src="about:blank">
@@ -216,15 +154,6 @@
       </div>
 
       <div id="empty" class="empty" style="display:none;"></div>
-    </div>
-
-    <div class="foot">
-      <div class="note">
-        Admin: <a href="https://admin.cfrihoa.com" target="_blank" rel="noopener">admin.cfrihoa.com</a>
-      </div>
-      <div class="note">
-        Calendar: <a href="https://api.leadconnectorhq.com/widget/booking/IunSOqtZMJBhiiNYqNfu" target="_blank" rel="noopener">LeadConnector Booking</a>
-      </div>
     </div>
   </div>
 
@@ -236,7 +165,6 @@
       function $(id){ return document.getElementById(id); }
       function setStatus(t){ $("statusText").textContent = t; }
 
-      // Your booking widget base URL
       var BOOKING_BASE = "https://api.leadconnectorhq.com/widget/booking/IunSOqtZMJBhiiNYqNfu";
 
       function getSlug(){
@@ -253,11 +181,11 @@
       function buildBookingUrl(slug){
         var u = new URL(BOOKING_BASE);
 
-        // ✅ This must match your field Query Key in GHL:
+        // Must match your GHL field Query Key:
         // unit_of_interest
         u.searchParams.set("unit_of_interest", slug);
 
-        // Optional tracking (harmless)
+        // Optional tracking
         u.searchParams.set("source", "cfrihoa_rentals");
         u.searchParams.set("listing_slug", slug);
 
@@ -267,13 +195,8 @@
       function load(){
         var slug = getSlug();
 
-        $("slugText").textContent = slug || "—";
-        $("unitText").textContent = slug || "—";
-        $("unitCode").textContent = slug || "—";
-        $("helperRow").style.display = slug ? "" : "none";
-
         if (!slug){
-          showError("Missing ?slug= in the URL. Please go back and select a unit.");
+          showError("This booking link is missing required information. Please return to Rentals and select a unit.");
           return;
         }
 
@@ -283,23 +206,6 @@
 
         frame.addEventListener("load", function(){
           setStatus("Online");
-        });
-
-        $("btnCopy").addEventListener("click", async function(){
-          try{
-            await navigator.clipboard.writeText(slug);
-            $("btnCopy").textContent = "Copied";
-            setTimeout(function(){ $("btnCopy").textContent = "Copy"; }, 1200);
-          }catch(e){
-            // fallback: select the text
-            var r = document.createRange();
-            r.selectNodeContents($("unitCode"));
-            var sel = window.getSelection();
-            sel.removeAllRanges();
-            sel.addRange(r);
-            $("btnCopy").textContent = "Select & Copy";
-            setTimeout(function(){ $("btnCopy").textContent = "Copy"; }, 1200);
-          }
         });
       }
 
