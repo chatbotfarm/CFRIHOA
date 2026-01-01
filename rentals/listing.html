@@ -173,11 +173,61 @@
       white-space:pre-wrap;
     }
 
+    /* NEW: CTA block under description */
+    .ctaBlock{
+      margin-top:12px;
+      border:1px solid rgba(126,200,255,.25);
+      background:rgba(126,200,255,.08);
+      border-radius:16px;
+      padding:12px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .ctaText{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+      flex:1 1 320px;
+    }
+
     .empty{
       padding:18px;
       color:var(--muted);
       text-align:center;
     }
+
+    /* NEW: Sticky bottom "Book" bar */
+    .stickyCta{
+      position:fixed;
+      left:0; right:0; bottom:0;
+      padding:12px;
+      background:rgba(11,15,20,.78);
+      backdrop-filter: blur(10px);
+      border-top:1px solid rgba(255,255,255,.10);
+      z-index:9999;
+      display:none; /* enabled once slug exists */
+    }
+    .stickyCtaInner{
+      max-width:1100px;
+      margin:0 auto;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .stickyCtaTitle{
+      font-weight:800;
+      font-size:13px;
+      color:var(--text);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:55vw;
+    }
+    body.hasStickyCta{ padding-bottom:86px; }
   </style>
 </head>
 
@@ -203,11 +253,19 @@
         <a class="btn" href="/rentals/">← Back to Rentals</a>
         <button id="btnRefresh" class="btn" type="button">Refresh</button>
 
-        <!-- Book Showing button (enabled once slug exists, but not shown as text) -->
+        <!-- Top Book Showing button -->
         <a id="btnBook" class="btnPrimary" href="/rentals/book.html" style="display:none;">Book Unit Showing</a>
       </div>
 
       <div id="content" class="empty">Loading…</div>
+    </div>
+  </div>
+
+  <!-- NEW: Sticky bottom CTA (no slug shown) -->
+  <div id="stickyCta" class="stickyCta" aria-hidden="true">
+    <div class="stickyCtaInner">
+      <div class="stickyCtaTitle" id="stickyCtaTitle">Book a Showing</div>
+      <a id="stickyBook" class="btnPrimary" href="/rentals/book.html">Book Unit Showing</a>
     </div>
   </div>
 
@@ -263,16 +321,44 @@
         return out;
       }
 
-      function wireBookButton(slug){
-        var btn = $("btnBook");
-        if (!btn) return;
-        if (!slug){
-          btn.style.display = "none";
-          btn.removeAttribute("href");
-          return;
+      // UPDATED: wires top + sticky buttons (and keeps slug hidden)
+      function wireBookButtons(slug, title){
+        var href = slug ? ("/rentals/book.html?slug=" + encodeURIComponent(slug)) : "";
+
+        // Top button
+        var btnTop = $("btnBook");
+        if (btnTop){
+          if (!slug){
+            btnTop.style.display = "none";
+            btnTop.removeAttribute("href");
+          }else{
+            btnTop.href = href;
+            btnTop.style.display = "";
+          }
         }
-        btn.href = "/rentals/book.html?slug=" + encodeURIComponent(slug);
-        btn.style.display = "";
+
+        // Sticky bar
+        var sticky = $("stickyCta");
+        var stickyBtn = $("stickyBook");
+        var stickyTitle = $("stickyCtaTitle");
+
+        if (stickyTitle) stickyTitle.textContent = title || "Book a Showing";
+
+        if (!slug){
+          if (sticky){
+            sticky.style.display = "none";
+            sticky.setAttribute("aria-hidden","true");
+          }
+          if (stickyBtn) stickyBtn.removeAttribute("href");
+          document.body.classList.remove("hasStickyCta");
+        }else{
+          if (stickyBtn) stickyBtn.href = href;
+          if (sticky){
+            sticky.style.display = "";
+            sticky.setAttribute("aria-hidden","false");
+          }
+          document.body.classList.add("hasStickyCta");
+        }
       }
 
       function render(listing){
@@ -291,6 +377,10 @@
         var laundry = safeText(listing.laundry);
         var parking = safeText(listing.parking);
         var desc = safeText(listing.description);
+
+        // Ensure our CTAs are wired with listing title
+        var slug = getSlug();
+        wireBookButtons(slug, title);
 
         $("content").className = "";
         $("content").innerHTML =
@@ -313,10 +403,24 @@
                   '<div class="kv"><div class="k">Parking</div><div class="v">' + (parking || "—") + '</div></div>' +
                 '</div>' +
                 '<div class="desc">' + (desc || "") + '</div>' +
+
+                /* NEW: Inline CTA below description */
+                '<div class="ctaBlock">' +
+                  '<div class="ctaText">Interested in this unit? Choose a showing time that works for you. Our team will confirm your appointment.</div>' +
+                  '<a id="btnBookInline" class="btnPrimary" href="#">Book Unit Showing</a>' +
+                '</div>' +
+
               '</div>' +
             '</div>' +
           '</div>';
 
+        // Wire inline CTA (no slug shown)
+        var inline = document.getElementById("btnBookInline");
+        if (inline && slug){
+          inline.href = "/rentals/book.html?slug=" + encodeURIComponent(slug);
+        }
+
+        // thumbs
         var thumbs = $("thumbs");
         thumbs.innerHTML = "";
         for (var i=0;i<photos.length;i++){
@@ -337,7 +441,9 @@
 
       async function load(){
         var slug = getSlug();
-        wireBookButton(slug);
+
+        // Enable/disable CTAs immediately (title will update after data loads)
+        wireBookButtons(slug, "Book a Showing");
 
         if (!slug){
           $("statusText").textContent = "Error";
@@ -365,6 +471,8 @@
             $("statusText").textContent = "Not found";
             $("content").className = "empty";
             $("content").textContent = "This listing is no longer available.";
+            // also hide sticky
+            wireBookButtons("", "Book a Showing");
             return;
           }
 
