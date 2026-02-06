@@ -1,0 +1,203 @@
+<!-- =========================
+  INVESTORS (investors.html)
+  Footer-only access. High-level only.
+========================= -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Detox-MD | Investors</title>
+  <meta name="description" content="Investor information for Detox-MD. Request investor materials and updates." />
+
+  <style>
+    :root{
+      --paper:#ffffff; --ink:#0a0a0a; --head:#111827;
+      --muted:#4b5563; --muted2:#6b7280;
+      --line:rgba(0,0,0,.12); --line2:rgba(0,0,0,.08); --soft:rgba(0,0,0,.04);
+      --shadow:0 18px 60px rgba(0,0,0,.10); --shadow2:0 10px 30px rgba(0,0,0,.08);
+      --radius:18px; --radius2:26px; --max:1120px;
+      --gold:#F3C44D; --gold2:#FFE199; --goldInk:#120D05;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ margin:0; padding:0; background:var(--paper); color:var(--ink); font-family:var(--font); scroll-behavior:smooth; }
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:var(--max); margin:0 auto; padding:0 18px; }
+    @media (max-width:520px){ .wrap{ padding:0 14px; } }
+
+    .nav{ position:relative; background:#fff; border-bottom:1px solid var(--line); padding-top:env(safe-area-inset-top); }
+    .nav-inner{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 0; flex-wrap:wrap; }
+    .brand{ display:flex; align-items:center; gap:12px; min-width:0; }
+    .logo{ width:64px; height:64px; border-radius:18px; object-fit:contain; background:#fff; border:1px solid var(--line); padding:8px; box-shadow:var(--shadow2); }
+    .brand-name{ font-weight:980; letter-spacing:-.6px; font-size:22px; color:var(--head); white-space:nowrap; }
+    .nav-links{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end; color:var(--muted); font-weight:900; font-size:14px; }
+    .nav-links a{ padding:10px 12px; border-radius:14px; }
+    .nav-links a:hover{ background:var(--soft); color:var(--ink); }
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:12px 14px; border-radius:14px; font-weight:950; font-size:14px;
+      border:1px solid var(--line); background:#fff;
+      transition:transform .12s ease, background .12s ease, border-color .12s ease, filter .12s ease;
+      white-space:nowrap; user-select:none; -webkit-tap-highlight-color:transparent;
+    }
+    .btn:hover{ transform:translateY(-1px); background:rgba(0,0,0,.02); border-color:rgba(0,0,0,.18); }
+    .btn.primary{ background:linear-gradient(135deg, var(--gold2), var(--gold)); color:var(--goldInk); border-color:rgba(0,0,0,.08); box-shadow:0 18px 50px rgba(243,196,77,.28); }
+    .btn.ghost{ border-color:rgba(0,0,0,.14); }
+
+    header{ padding:22px 0 10px; }
+    section{ padding:22px 0; }
+    h1{ margin:10px 0 10px; font-size:clamp(30px, 6.8vw, 54px); line-height:1.02; letter-spacing:-1px; font-weight:980; color:var(--head); }
+    .subtitle{ margin:0; color:var(--muted); font-size:16px; line-height:1.7; max-width:80ch; }
+    .divider{ height:1px; background:var(--line); margin:14px 0; }
+    .fine{ color:var(--muted2); font-size:12px; line-height:1.6; }
+
+    .grid-2{ display:grid; gap:14px; grid-template-columns:1fr 1fr; }
+    @media (max-width:980px){ .grid-2{ grid-template-columns:1fr; } }
+
+    .tile{ padding:18px; border-radius:var(--radius); border:1px solid var(--line); background:#fff; box-shadow:var(--shadow2); }
+    .tile h3{ margin:0 0 6px; font-size:16px; letter-spacing:-.2px; font-weight:950; color:var(--head); }
+    .tile p{ margin:0; color:var(--muted); font-size:14px; line-height:1.6; }
+    .tile ul{ margin:10px 0 0; padding-left:18px; color:var(--muted); font-size:14px; line-height:1.75; }
+
+    footer{
+      padding:26px 0 40px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+      padding-bottom:calc(30px + env(safe-area-inset-bottom));
+    }
+    .footer-grid{ display:grid; gap:14px; grid-template-columns:1.2fr .8fr; }
+    @media (max-width:980px){ .footer-grid{ grid-template-columns:1fr; } }
+    .footer-links{ display:grid; gap:8px; margin-top:8px; font-weight:900; color:var(--muted); }
+    .footer-links a{ width:fit-content; padding:6px 0; }
+    .footer-links a:hover{ color:var(--ink); }
+
+    .sticky-cta{
+      position:fixed; left:0; right:0; bottom:0;
+      padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+      background:rgba(255,255,255,.92);
+      border-top:1px solid var(--line);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      display:none; z-index:60;
+    }
+    .sticky-cta .row{ max-width:var(--max); margin:0 auto; padding:0 6px; }
+    @media (max-width:860px){ .sticky-cta{ display:block; } body{ padding-bottom:92px; } }
+  </style>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="index.html" aria-label="Detox-MD home">
+        <img class="logo"
+             src="https://storage.googleapis.com/msgsndr/StfNy22QbdYcambHAmlP/media/6963acb498efbd3f65e5ece9.png"
+             alt="Detox-MD logo"
+             loading="eager"
+             decoding="async" />
+        <div class="brand-name">Detox-MD</div>
+      </a>
+
+      <nav class="nav-links" aria-label="Investor navigation">
+        <a href="index.html">Client Home</a>
+        <a href="#request">Request Materials</a>
+      </nav>
+    </div>
+  </div>
+
+  <header>
+    <div class="wrap">
+      <h1>Investors</h1>
+      <p class="subtitle">
+        Detox-MD is building a structured ecosystem across three products: Cognitive Control (profiling + sessions),
+        Personalized Vitamins (physician-reviewed labs → protocols → platform fulfillment), and in-person programs delivered through
+        a Learning Center model and partner facilities.
+      </p>
+
+      <div class="divider"></div>
+
+      <div class="grid-2">
+        <div class="tile">
+          <h3>High-level model</h3>
+          <ul>
+            <li>Client intake and routing</li>
+            <li>Remote delivery for scalable programs</li>
+            <li>Physician-reviewed lab workflows with protocol guardrails</li>
+            <li>Learning Center + partner expansion for in-person programs</li>
+          </ul>
+        </div>
+
+        <div class="tile">
+          <h3>Request materials</h3>
+          <p>
+            Submit the form to request investor materials and updates. You will receive next steps after submission.
+          </p>
+          <div class="divider"></div>
+          <a class="btn primary" href="#request" style="width:100%;">Request Investor Materials</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="request">
+    <div class="wrap">
+      <div class="tile">
+        <h3 style="margin:0 0 6px;">Investor Request</h3>
+        <p style="margin:0; color:var(--muted); font-size:14px; line-height:1.6;">
+          Paste your GoHighLevel embed code below. Recommended fields: name, firm, email, thesis/interest area, and accreditation (if required).
+        </p>
+        <div class="divider"></div>
+
+        <div id="ghl-form-embed">
+          <!-- YOUR_INVESTOR_REQUEST_FORM_EMBED_CODE_HERE -->
+          <div style="padding:18px; border-radius:14px; border:1px dashed rgba(0,0,0,0.25); background:#fff; color:var(--muted); line-height:1.6;">
+            Paste your Investor Request form embed code here (iframe or script).
+          </div>
+        </div>
+
+        <p class="fine" style="margin-top:10px;">
+          This page is informational and not an offer to sell securities. Any offering, if made, will be conducted through appropriate legal documentation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <div class="brand" style="gap:10px;">
+          <img class="logo"
+               style="width:54px;height:54px;border-radius:16px;padding:6px;"
+               src="https://storage.googleapis.com/msgsndr/StfNy22QbdYcambHAmlP/media/6963acb498efbd3f65e5ece9.png"
+               alt="Detox-MD logo"
+               loading="lazy"
+               decoding="async" />
+          <div class="brand-name" style="font-size:18px;">Detox-MD</div>
+        </div>
+        <div class="divider"></div>
+        <p class="fine">
+          Detox-MD provides educational guidance and coaching-style support and is not a substitute for medical diagnosis, psychiatric treatment,
+          or emergency services.
+        </p>
+      </div>
+
+      <div>
+        <p style="margin:0 0 6px; font-weight:980; color:var(--ink);">For Professionals & Partners</p>
+        <div class="footer-links">
+          <a href="providers.html">Are you a provider?</a>
+          <a href="partners.html">Offer programs at your facility?</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="sticky-cta" aria-label="Quick action">
+    <div class="row">
+      <a class="btn primary" href="#request" style="width:100%;">Request Materials</a>
+    </div>
+  </div>
+</body>
+</html>

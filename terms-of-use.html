@@ -1,0 +1,134 @@
+<!-- terms-of-use.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CFRIHOA · Terms of Use</title>
+  <meta name="description" content="CFRIHOA terms of use including acceptable use, disclaimers, and SMS messaging terms (A2P)." />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <div class="min-h-screen flex flex-col">
+    <div id="site-header"></div>
+
+    <main class="flex-1">
+      <section class="border-b border-slate-200 bg-white">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h1 class="text-3xl font-semibold tracking-tight">Terms of Use</h1>
+          <p class="mt-2 text-sm text-slate-600">Last updated: <span id="tou-last-updated">2026-02-06</span></p>
+        </div>
+      </section>
+
+      <section class="py-10">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="prose prose-slate max-w-none">
+            <p>
+              These Terms of Use (“Terms”) govern your access to and use of CFRIHOA websites, services, and communications.
+              By using our site or engaging with us, you agree to these Terms.
+            </p>
+
+            <h2>1) Who We Are</h2>
+            <p>
+              CFRIHOA provides residential rental services, including listing information, scheduling, resident communications,
+              and maintenance coordination.
+            </p>
+
+            <h2>2) Acceptable Use</h2>
+            <ul>
+              <li>You agree not to misuse the site, interfere with operations, or attempt unauthorized access.</li>
+              <li>You agree not to submit false information, impersonate others, or violate applicable laws.</li>
+              <li>You agree not to upload malicious code or content that is unlawful, abusive, or infringing.</li>
+            </ul>
+
+            <h2>3) Rental Listings and Availability</h2>
+            <p>
+              Listings, pricing, availability, and requirements may change. Any information provided on the site or in messages
+              is for general informational purposes and does not constitute a binding offer.
+            </p>
+
+            <h2>4) Applications and Screening</h2>
+            <p>
+              If you apply, you agree to provide accurate information. Approval is not guaranteed and may depend on eligibility,
+              verification, and applicable screening criteria.
+            </p>
+
+            <h2>5) SMS/Text Messaging Terms (A2P/10DLC)</h2>
+            <p>
+              If you opt in to receive text messages from CFRIHOA (for example by submitting a form, requesting a callback,
+              or asking for updates by text), you consent to receive SMS/text messages related to inquiries, scheduling,
+              application steps, resident service communications, and maintenance updates.
+            </p>
+            <ul>
+              <li><strong>Message frequency</strong> varies based on your interaction and service needs.</li>
+              <li><strong>Message &amp; data rates</strong> may apply.</li>
+              <li><strong>Opt-out</strong>: Reply <strong>STOP</strong> to unsubscribe at any time.</li>
+              <li><strong>Help</strong>: Reply <strong>HELP</strong> for assistance.</li>
+              <li>Carriers are not liable for delayed or undelivered messages.</li>
+              <li>Consent to receive texts is not a condition of renting; however, SMS may be the fastest way to coordinate certain updates if you choose it.</li>
+            </ul>
+
+            <h2>6) Third-Party Links</h2>
+            <p>
+              Our site may link to third-party websites (e.g., social media). We are not responsible for third-party content,
+              privacy practices, or availability.
+            </p>
+
+            <h2>7) Disclaimer</h2>
+            <p>
+              The website and services are provided “as is” without warranties of any kind, to the maximum extent permitted by law.
+              We do not guarantee uninterrupted or error-free operation.
+            </p>
+
+            <h2>8) Limitation of Liability</h2>
+            <p>
+              To the maximum extent permitted by law, CFRIHOA will not be liable for indirect, incidental, special, consequential,
+              or punitive damages, or any loss of profits, data, or goodwill arising from use of the site or services.
+            </p>
+
+            <h2>9) Changes to the Site or Terms</h2>
+            <p>
+              We may update the site and these Terms at any time. The “Last updated” date indicates the latest revision.
+              Continued use after updates means you accept the revised Terms.
+            </p>
+
+            <h2>10) Privacy</h2>
+            <p>
+              Your use of the site is also subject to our Privacy Policy. Please review it for information about how we handle data.
+            </p>
+
+            <h2>11) Contact</h2>
+            <ul>
+              <li><strong>Phone:</strong> (401) 210-2121</li>
+              <li><strong>Facebook:</strong> <a class="text-emerald-700 hover:text-emerald-800" href="https://www.facebook.com/profile.php?id=61566481627976" target="_blank" rel="noopener noreferrer">CFRIHOA</a></li>
+            </ul>
+          </div>
+
+          <div class="mt-10 flex gap-3">
+            <a href="/" class="inline-flex items-center rounded-full border border-slate-300 px-6 py-2 text-sm font-medium text-slate-800 hover:bg-white">Back to Home</a>
+            <a href="privacy-policy.html" class="inline-flex items-center rounded-full bg-emerald-600 px-6 py-2 text-sm font-medium text-white hover:bg-emerald-700">Privacy Policy</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+  </div>
+
+  <script>
+    async function loadPartial(targetId, file) {
+      const el = document.getElementById(targetId);
+      if (!el) return;
+      try {
+        const res = await fetch(file);
+        const html = await res.text();
+        el.innerHTML = html;
+      } catch (e) {
+        console.error("Partial load error:", file, e);
+      }
+    }
+    loadPartial("site-header", "header.html");
+    loadPartial("site-footer", "footer.html");
+  </script>
+</body>
+</html>
